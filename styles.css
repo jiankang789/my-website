@@ -104,6 +104,7 @@ h1 {
 }
 
 .hero-metrics div,
+.metric-button,
 .panel,
 .tab-panel,
 .deliverable-card {
@@ -112,18 +113,26 @@ h1 {
   background: rgba(16, 23, 34, 0.88);
 }
 
-.hero-metrics div {
+.hero-metrics div,
+.metric-button {
   padding: 18px 12px;
   text-align: center;
 }
 
-.hero-metrics strong {
+.metric-button {
+  width: 100%;
+  color: inherit;
+}
+
+.hero-metrics strong,
+.metric-button strong {
   display: block;
   color: var(--gold);
   font-size: 30px;
 }
 
-.hero-metrics span {
+.hero-metrics span,
+.metric-button span {
   color: var(--muted);
   font-size: 13px;
 }
@@ -148,6 +157,9 @@ h1 {
 .feature-card {
   min-height: 180px;
   padding: 20px;
+  color: inherit;
+  text-align: left;
+  width: 100%;
 }
 
 .feature-index {
@@ -172,6 +184,19 @@ h1 {
 .platform-card p {
   color: #d7deea;
   line-height: 1.65;
+}
+
+.feature-card b {
+  display: inline-flex;
+  margin-top: 10px;
+  color: var(--gold);
+}
+
+.feature-card:hover,
+.metric-button:hover,
+.tool-tab:hover {
+  border-color: rgba(255, 211, 123, 0.72);
+  transform: translateY(-1px);
 }
 
 .platform-grid {
@@ -345,6 +370,109 @@ button {
 
 .tab-panel.active {
   display: block;
+}
+
+.tool-switch {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tool-tab {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.tool-tab.active {
+  background: var(--gold);
+  color: #111827;
+}
+
+.tool-panel {
+  display: none;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+
+.tool-panel.active {
+  display: block;
+}
+
+.tool-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tool-head h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.upload-card {
+  min-height: 180px;
+  padding: 14px;
+  border: 1px dashed rgba(255, 210, 126, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.upload-card span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.upload-card img,
+.upload-card video,
+.upload-card audio {
+  display: none;
+  width: 100%;
+  max-height: 220px;
+  margin-top: 10px;
+  border-radius: 6px;
+  object-fit: contain;
+  background: #050608;
+}
+
+.result-box {
+  margin-top: 14px;
+  min-height: 180px;
+  border: 1px solid rgba(255, 210, 126, 0.18);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.result-box:empty::before {
+  content: "生成结果会显示在这里";
+  display: block;
+  padding: 16px;
+  color: var(--muted);
+}
+
+.result-box pre {
+  margin: 0;
+  padding: 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #e8edf7;
+  line-height: 1.7;
+  font-family: inherit;
 }
 
 .deliverable-grid {
@@ -532,7 +660,8 @@ button {
   }
 
   .grid-2,
-  .mini-grid {
+  .mini-grid,
+  .upload-grid {
     grid-template-columns: 1fr;
   }
 
@@ -550,6 +679,19 @@ button {
     min-height: 50px;
     padding: 10px 8px;
     font-size: 14px;
+  }
+
+  .tool-switch {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tool-panel {
+    padding: 14px;
   }
 
   .actions {
