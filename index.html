@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>美业大健康AI获客中控台</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Beauty & Wellness AI Growth Console</p>
+          <h1>美业大健康AI获客中控台</h1>
+          <p class="lead">面向美业轻抗衰、大健康、养生调理门店，把公众号内容、短视频生成、爆款长视频生产和私域获客诊断集中到一个工作台。</p>
+        </div>
+        <div class="hero-metrics">
+          <div><strong>公众号</strong><span>自动发布</span></div>
+          <div><strong>图片</strong><span>生成短视频</span></div>
+          <div><strong>30天</strong><span>执行闭环</span></div>
+        </div>
+      </header>
+
+      <section class="feature-strip">
+        <article class="feature-card">
+          <span class="feature-index">01</span>
+          <h2>公众号自动发布平台</h2>
+          <p>输入主题、项目和客户痛点，生成公众号文章、摘要、封面建议，并进入待发布清单。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-index">02</span>
+          <h2>图片 + 声音 + 文案生成短视频</h2>
+          <p>上传一张项目/门店/人物图片，上传声音，加上文案，生成可发布的竖屏短视频草稿。</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-index">03</span>
+          <h2>30秒短视频生成爆款长视频</h2>
+          <p>上传一段30秒短视频，再加声音和文案，自动扩展成更完整的爆款长视频脚本与制作方案。</p>
+        </article>
+      </section>
+
+      <section class="layout">
+        <aside class="panel input-panel">
+          <div class="panel-head">
+            <h2>门店资料</h2>
+            <button type="button" id="fillDemo" class="ghost">填入示例</button>
+          </div>
+          <label>门店/品牌名称
+            <input id="name" placeholder="例如：悦龄轻抗衰管理中心">
+          </label>
+          <label>细分行业
+            <select id="industry">
+              <option>美业轻抗衰</option>
+              <option>皮肤管理</option>
+              <option>养生调理</option>
+              <option>大健康管理</option>
+              <option>产后修复</option>
+              <option>体态管理</option>
+            </select>
+          </label>
+          <label>主推项目
+            <input id="product" placeholder="例如：喷射抗衰、面部提升、皮肤管理">
+          </label>
+          <label>目标客户
+            <textarea id="audience" rows="3" placeholder="例如：35-55岁，怕显老、重视状态、愿意为效果和安全感付费的本地女性"></textarea>
+          </label>
+          <label>当前获客痛点
+            <textarea id="pain" rows="3" placeholder="例如：不会拍短视频、客户嫌贵、到店咨询少、朋友圈信任感弱"></textarea>
+          </label>
+          <div class="grid-2">
+            <label>所在城市
+              <input id="city" placeholder="杭州">
+            </label>
+            <label>主推客单价
+              <input id="price" placeholder="1280">
+            </label>
+          </div>
+          <label>主要平台
+            <select id="platform">
+              <option>视频号</option>
+              <option>抖音</option>
+              <option>小红书</option>
+              <option>朋友圈</option>
+              <option>多平台矩阵</option>
+            </select>
+          </label>
+          <label>想达成的结果
+            <input id="goal" placeholder="例如：30天拿到80个咨询，成交10个体验客户">
+          </label>
+          <button type="button" id="generate" class="primary">生成获客中控方案</button>
+        </aside>
+
+        <section class="main-col">
+          <nav class="tabs" aria-label="中控台视图">
+            <button class="tab active" data-tab="platform">三大功能</button>
+            <button class="tab" data-tab="diagnosis">获客诊断</button>
+            <button class="tab" data-tab="content">内容方案</button>
+            <button class="tab" data-tab="export">导出</button>
+          </nav>
+
+          <section id="platform" class="tab-panel active">
+            <div id="platformGrid" class="platform-grid"></div>
+          </section>
+
+          <section id="diagnosis" class="tab-panel">
+            <div id="diagnosisGrid" class="deliverable-grid"></div>
+          </section>
+
+          <section id="content" class="tab-panel">
+            <div class="timeline" id="contentPlan"></div>
+          </section>
+
+          <section id="export" class="tab-panel">
+            <div class="panel export-panel">
+              <h2>导出中控台方案</h2>
+              <p>可复制给门店老板、咨询客户或助教团队，用于成交、演示和后续陪跑。</p>
+              <div class="actions">
+                <button type="button" id="copyAll" class="primary">复制完整方案</button>
+                <button type="button" id="downloadAll" class="ghost">下载TXT</button>
+              </div>
+              <textarea id="fullReport" rows="18" readonly></textarea>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
