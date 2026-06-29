@@ -3,205 +3,65 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>美业大健康AI获客中控台</title>
+    <title>AI图片短视频生成测试器</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <main class="app">
-      <header class="hero">
+    <main class="app mini-app">
+      <header class="hero mini-hero">
         <div>
-          <p class="eyebrow">Beauty & Wellness AI Growth Console</p>
-          <h1>美业大健康AI获客中控台</h1>
-          <p class="lead">给美业轻抗衰、大健康、养生调理门店使用的获客智能体工具。电脑端和手机端都可以打开功能、上传素材、生成文案方案并导出。</p>
-        </div>
-        <div class="hero-metrics">
-          <button type="button" class="metric-button" data-tool="wechat"><strong>公众号</strong><span>自动发布方案</span></button>
-          <button type="button" class="metric-button" data-tool="image"><strong>图片</strong><span>生成短视频</span></button>
-          <button type="button" class="metric-button" data-tool="longvideo"><strong>30秒</strong><span>生成长视频</span></button>
+          <p class="eyebrow">AI Video Hook Test</p>
+          <h1>AI图片短视频生成测试器</h1>
+          <p class="lead">先跑通最小功能：上传一张图片、上传一段声音、填写文案，直接生成一个可预览、可下载的竖屏短视频。</p>
         </div>
       </header>
 
-      <section class="feature-strip" aria-label="三大智能体功能">
-        <button type="button" class="feature-card" data-tool="wechat">
-          <span class="feature-index">01</span>
-          <h2>公众号自动发布平台</h2>
-          <p>输入主题、项目和客户痛点，生成公众号文章标题、正文框架、摘要、封面建议和待发布清单。</p>
-          <b>打开功能</b>
-        </button>
-        <button type="button" class="feature-card" data-tool="image">
-          <span class="feature-index">02</span>
-          <h2>图片 + 声音 + 文案生成短视频</h2>
-          <p>上传一张图片、上传声音、填写口播文案，生成15-30秒竖屏短视频脚本、字幕和发布文案。</p>
-          <b>打开功能</b>
-        </button>
-        <button type="button" class="feature-card" data-tool="longvideo">
-          <span class="feature-index">03</span>
-          <h2>30秒短视频生成爆款长视频</h2>
-          <p>上传30秒短视频、声音和文案，扩写成1-3分钟长视频结构、分镜、标题和私域引导。</p>
-          <b>打开功能</b>
-        </button>
-      </section>
-
-      <section class="layout">
-        <aside class="panel input-panel">
-          <div class="panel-head">
-            <h2>门店资料</h2>
+      <section class="mini-layout">
+        <section class="panel tool-panel active">
+          <div class="tool-head">
+            <h2>图片 + 声音 + 文案生成短视频</h2>
             <button type="button" id="fillDemo" class="ghost">填入示例</button>
           </div>
-          <label>门店/品牌名称
-            <input id="name" placeholder="例如：悦容轻抗衰管理中心">
-          </label>
-          <label>细分行业
-            <select id="industry">
-              <option>美业轻抗衰</option>
-              <option>皮肤管理</option>
-              <option>养生调理</option>
-              <option>大健康管理</option>
-              <option>产后修复</option>
-              <option>体态管理</option>
-            </select>
-          </label>
-          <label>主推项目
-            <input id="product" placeholder="例如：喷射抗衰、面部提升、皮肤管理">
-          </label>
-          <label>目标客户
-            <textarea id="audience" rows="3" placeholder="例如：35-55岁，怕显老、重视状态、愿意为效果和安全感付费的本地女性"></textarea>
-          </label>
-          <label>当前获客痛点
-            <textarea id="pain" rows="3" placeholder="例如：不会拍短视频、客户嫌贵、到店咨询少、朋友圈信任感弱"></textarea>
-          </label>
+
           <div class="grid-2">
-            <label>所在城市
-              <input id="city" placeholder="杭州">
+            <label>门店/品牌名称
+              <input id="name" placeholder="例如：悦容轻抗衰管理中心">
             </label>
-            <label>主推客单价
-              <input id="price" placeholder="1280">
+            <label>主推项目
+              <input id="product" placeholder="例如：喷射抗衰提升项目">
             </label>
           </div>
-          <label>主要平台
-            <select id="platform">
-              <option>视频号</option>
-              <option>抖音</option>
-              <option>小红书</option>
-              <option>朋友圈</option>
-              <option>多平台矩阵</option>
-            </select>
+
+          <div class="upload-grid">
+            <label class="upload-card">上传图片
+              <input id="imageFile" type="file" accept="image/*">
+              <img id="imagePreview" alt="">
+              <span>建议上传人物、门店、产品、案例图</span>
+            </label>
+            <label class="upload-card">上传声音
+              <input id="imageAudio" type="file" accept="audio/*">
+              <audio id="imageAudioPreview" controls></audio>
+              <span>支持口播、讲解、品牌音色；不上传也能生成静音视频</span>
+            </label>
+          </div>
+
+          <label>视频文案/字幕
+            <textarea id="imageCopy" rows="5" placeholder="例如：做轻抗衰之前，先判断自己适不适合。别急着下单，先做一次AI项目适配诊断。"></textarea>
           </label>
-          <label>想达成的结果
-            <input id="goal" placeholder="例如：30天拿到30个咨询，成交10个体验客户">
-          </label>
-          <button type="button" id="generate" class="primary">生成获客中控方案</button>
-        </aside>
 
-        <section class="main-col">
-          <nav class="tabs" aria-label="中控台视图">
-            <button type="button" class="tab active" data-tab="tools">功能工具</button>
-            <button type="button" class="tab" data-tab="diagnosis">获客诊断</button>
-            <button type="button" class="tab" data-tab="content">30天计划</button>
-            <button type="button" class="tab" data-tab="export">导出</button>
-          </nav>
+          <div class="actions">
+            <button type="button" id="runImageVideo" class="primary">生成短视频</button>
+            <button type="button" id="copyResult" class="ghost">复制文案方案</button>
+          </div>
 
-          <section id="tools" class="tab-panel active">
-            <div class="tool-switch">
-              <button type="button" class="tool-tab active" data-tool="wechat">公众号</button>
-              <button type="button" class="tool-tab" data-tool="image">图片短视频</button>
-              <button type="button" class="tool-tab" data-tool="longvideo">长视频</button>
-            </div>
+          <div class="video-maker">
+            <canvas id="imageVideoCanvas" width="720" height="1280"></canvas>
+            <video id="generatedImageVideo" controls playsinline></video>
+            <a id="downloadImageVideo" class="download-link" download="AI获客短视频.webm">下载生成的视频</a>
+          </div>
 
-            <article id="tool-wechat" class="tool-panel active">
-              <div class="tool-head">
-                <h2>公众号自动发布方案生成器</h2>
-                <button type="button" class="ghost copy-tool" data-output="wechatOutput">复制结果</button>
-              </div>
-              <div class="grid-2">
-                <label>文章主题
-                  <input id="wechatTopic" placeholder="例如：轻抗衰项目到底适合哪些人">
-                </label>
-                <label>发布目标
-                  <select id="wechatGoal">
-                    <option>引导私信咨询</option>
-                    <option>建立专业信任</option>
-                    <option>引导到店体验</option>
-                    <option>活动转化</option>
-                  </select>
-                </label>
-              </div>
-              <label>案例/卖点素材
-                <textarea id="wechatMaterial" rows="3" placeholder="写门店案例、项目优势、客户常问问题"></textarea>
-              </label>
-              <button type="button" id="runWechat" class="primary">生成公众号发布包</button>
-              <div id="wechatOutput" class="result-box"></div>
-            </article>
-
-            <article id="tool-image" class="tool-panel">
-              <div class="tool-head">
-                <h2>图片生成短视频发布包</h2>
-                <button type="button" class="ghost copy-tool" data-output="imageOutput">复制结果</button>
-              </div>
-              <div class="upload-grid">
-                <label class="upload-card">上传图片
-                  <input id="imageFile" type="file" accept="image/*">
-                  <img id="imagePreview" alt="">
-                  <span>支持门店、项目、人物、案例图</span>
-                </label>
-                <label class="upload-card">上传声音
-                  <input id="imageAudio" type="file" accept="audio/*">
-                  <audio id="imageAudioPreview" controls></audio>
-                  <span>支持口播、讲解、品牌音色</span>
-                </label>
-              </div>
-              <label>短视频文案/口播重点
-                <textarea id="imageCopy" rows="4" placeholder="写你想表达的卖点、客户痛点、行动引导"></textarea>
-              </label>
-              <button type="button" id="runImageVideo" class="primary">生成短视频脚本</button>
-              <div id="imageOutput" class="result-box"></div>
-            </article>
-
-            <article id="tool-longvideo" class="tool-panel">
-              <div class="tool-head">
-                <h2>30秒短视频扩写长视频工具</h2>
-                <button type="button" class="ghost copy-tool" data-output="longVideoOutput">复制结果</button>
-              </div>
-              <div class="upload-grid">
-                <label class="upload-card">上传30秒短视频
-                  <input id="shortVideoFile" type="file" accept="video/*">
-                  <video id="shortVideoPreview" controls playsinline></video>
-                  <span>支持案例、讲解、门店过程视频</span>
-                </label>
-                <label class="upload-card">上传声音
-                  <input id="longVideoAudio" type="file" accept="audio/*">
-                  <audio id="longVideoAudioPreview" controls></audio>
-                  <span>用于长视频口播或配音方向</span>
-                </label>
-              </div>
-              <label>扩写方向/长视频文案
-                <textarea id="longVideoCopy" rows="4" placeholder="写30秒视频讲了什么，想扩展成什么主题"></textarea>
-              </label>
-              <button type="button" id="runLongVideo" class="primary">生成长视频方案</button>
-              <div id="longVideoOutput" class="result-box"></div>
-            </article>
-          </section>
-
-          <section id="diagnosis" class="tab-panel">
-            <div id="diagnosisGrid" class="deliverable-grid"></div>
-          </section>
-
-          <section id="content" class="tab-panel">
-            <div class="timeline" id="contentPlan"></div>
-          </section>
-
-          <section id="export" class="tab-panel">
-            <div class="panel export-panel">
-              <h2>导出中控台方案</h2>
-              <p>可复制给门店老板、咨询客户或助教团队，用于成交、演示和后续陪跑。</p>
-              <div class="actions">
-                <button type="button" id="copyAll" class="primary">复制完整方案</button>
-                <button type="button" id="downloadAll" class="ghost">下载TXT</button>
-              </div>
-              <textarea id="fullReport" rows="18" readonly></textarea>
-              <p id="toast" class="toast" role="status" aria-live="polite"></p>
-            </div>
-          </section>
+          <div id="imageOutput" class="result-box"></div>
+          <p id="toast" class="toast" role="status" aria-live="polite"></p>
         </section>
       </section>
     </main>

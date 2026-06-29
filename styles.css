@@ -605,6 +605,50 @@ button {
   font-weight: 800;
 }
 
+.mini-app {
+  max-width: 1180px;
+}
+
+.mini-hero {
+  margin-bottom: 18px;
+}
+
+.mini-layout {
+  display: block;
+}
+
+.video-maker {
+  margin-top: 14px;
+}
+
+#imageVideoCanvas {
+  display: none;
+}
+
+#generatedImageVideo {
+  display: none;
+  width: min(360px, 100%);
+  max-height: 680px;
+  margin: 14px auto 0;
+  border-radius: 8px;
+  background: #050608;
+}
+
+.download-link {
+  display: none;
+  width: fit-content;
+  margin: 12px auto 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  color: #fff;
+  font-weight: 900;
+  text-decoration: none;
+}
+
 @media (max-width: 1120px) {
   .layout,
   .deliverable-grid,
