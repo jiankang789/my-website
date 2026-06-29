@@ -621,6 +621,11 @@ button {
   margin-top: 14px;
 }
 
+.make-video-button {
+  margin: 0 auto 12px;
+  max-width: 520px;
+}
+
 #imageVideoCanvas {
   display: none;
 }

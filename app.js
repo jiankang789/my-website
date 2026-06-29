@@ -269,6 +269,12 @@ document.querySelector("#runImageVideo").addEventListener("click", () => {
   });
 });
 
+document.querySelector("#runImageVideoBottom").addEventListener("click", () => {
+  generateVideo().catch((error) => {
+    renderResult(`视频生成失败：${error.message}\n\n建议：先用 Chrome / Edge 打开网页，并允许音频播放；也可以先只上传图片测试静音视频。`);
+  });
+});
+
 document.querySelector("#copyResult").addEventListener("click", async () => {
   const text = latestResult || buildScript();
   try {
