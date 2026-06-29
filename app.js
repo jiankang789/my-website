@@ -112,18 +112,22 @@ function wrapLines(ctx, value, maxWidth, maxLines) {
   return lines.slice(0, maxLines);
 }
 
-function drawImageCover(ctx, image) {
+function drawImageCover(ctx, image, progress) {
   const {width, height} = ctx.canvas;
-  const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight);
+  const breathe = Math.sin(progress * Math.PI * 6) * 0.012;
+  const pushIn = progress * 0.08;
+  const driftX = Math.sin(progress * Math.PI * 2) * 18;
+  const driftY = Math.cos(progress * Math.PI * 2) * 10;
+  const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight) * (1.04 + pushIn + breathe);
   const drawWidth = image.naturalWidth * scale;
   const drawHeight = image.naturalHeight * scale;
-  ctx.drawImage(image, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
+  ctx.drawImage(image, (width - drawWidth) / 2 + driftX, (height - drawHeight) / 2 + driftY, drawWidth, drawHeight);
 }
 
 function drawFrame(ctx, image, info, progress) {
   const {width, height} = ctx.canvas;
   ctx.clearRect(0, 0, width, height);
-  drawImageCover(ctx, image);
+  drawImageCover(ctx, image, progress);
 
   const shade = ctx.createLinearGradient(0, 0, 0, height);
   shade.addColorStop(0, "rgba(0,0,0,.16)");
@@ -132,28 +136,29 @@ function drawFrame(ctx, image, info, progress) {
   ctx.fillStyle = shade;
   ctx.fillRect(0, 0, width, height);
 
+  const floatY = Math.sin(progress * Math.PI * 4) * 5;
   ctx.fillStyle = "rgba(8,11,16,.82)";
-  ctx.fillRect(48, 64, width - 96, 130);
+  ctx.fillRect(48, 64 + floatY, width - 96, 130);
   ctx.fillStyle = "#ffd37b";
   ctx.font = "800 40px Microsoft YaHei, Arial";
-  ctx.fillText(info.name, 78, 118);
+  ctx.fillText(info.name, 78, 118 + floatY);
   ctx.fillStyle = "#fff";
   ctx.font = "800 34px Microsoft YaHei, Arial";
-  ctx.fillText(info.product, 78, 166);
+  ctx.fillText(info.product, 78, 166 + floatY);
 
   ctx.fillStyle = "rgba(8,11,16,.86)";
-  ctx.fillRect(48, height - 390, width - 96, 280);
+  ctx.fillRect(48, height - 390 - floatY, width - 96, 280);
 
   ctx.fillStyle = "#fff";
   ctx.font = "900 42px Microsoft YaHei, Arial";
   wrapLines(ctx, `做${info.product}前，先看你适不适合`, width - 140, 2).forEach((line, index) => {
-    ctx.fillText(line, 78, height - 315 + index * 54);
+    ctx.fillText(line, 78, height - 315 - floatY + index * 54);
   });
 
   ctx.fillStyle = "#dbe7ff";
   ctx.font = "700 30px Microsoft YaHei, Arial";
   wrapLines(ctx, info.copy, width - 140, 4).forEach((line, index) => {
-    ctx.fillText(line, 78, height - 188 + index * 42);
+    ctx.fillText(line, 78, height - 188 - floatY + index * 42);
   });
 
   ctx.fillStyle = "#ffd37b";

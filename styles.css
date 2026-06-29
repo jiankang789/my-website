@@ -626,6 +626,14 @@ button {
   max-width: 520px;
 }
 
+.hint {
+  max-width: 720px;
+  margin: 0 auto 12px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
 #imageVideoCanvas {
   display: none;
 }
