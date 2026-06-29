@@ -291,6 +291,7 @@ button {
   border: 0;
   border-radius: 6px;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .primary,
@@ -326,6 +327,8 @@ button {
   background: rgba(255, 255, 255, 0.04);
   color: var(--muted);
   font-weight: 900;
+  line-height: 1.2;
+  white-space: normal;
 }
 
 .tab.active {
@@ -467,6 +470,13 @@ button {
   line-height: 1.65;
 }
 
+.toast {
+  min-height: 22px;
+  margin: 10px 0 0;
+  color: var(--gold);
+  font-weight: 800;
+}
+
 @media (max-width: 1120px) {
   .layout,
   .deliverable-grid,
@@ -529,10 +539,16 @@ button {
   .tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 8px 0;
+    background: #080b10;
   }
 
   .tab {
-    min-height: 42px;
+    min-height: 50px;
+    padding: 10px 8px;
     font-size: 14px;
   }
 

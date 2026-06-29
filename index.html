@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>美业大健康AI获客中控台</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -12,7 +12,7 @@
         <div>
           <p class="eyebrow">Beauty & Wellness AI Growth Console</p>
           <h1>美业大健康AI获客中控台</h1>
-          <p class="lead">面向美业轻抗衰、大健康、养生调理门店，把公众号内容、短视频生成、爆款长视频生产和私域获客诊断集中到一个工作台。</p>
+          <p class="lead">面向美业轻抗衰、大健康、养生调理门店，把公众号自动发布、短视频生成、长视频爆款扩写和私域获客诊断集中到一个工作台。</p>
         </div>
         <div class="hero-metrics">
           <div><strong>公众号</strong><span>自动发布</span></div>
@@ -30,12 +30,12 @@
         <article class="feature-card">
           <span class="feature-index">02</span>
           <h2>图片 + 声音 + 文案生成短视频</h2>
-          <p>上传一张项目/门店/人物图片，上传声音，加上文案，生成可发布的竖屏短视频草稿。</p>
+          <p>上传一张门店、项目或人物图片，上传声音，加上文案，生成可发布的竖屏短视频方案。</p>
         </article>
         <article class="feature-card">
           <span class="feature-index">03</span>
           <h2>30秒短视频生成爆款长视频</h2>
-          <p>上传一段30秒短视频，再加声音和文案，自动扩展成更完整的爆款长视频脚本与制作方案。</p>
+          <p>上传一段30秒短视频，再加声音和文案，自动扩展成爆款长视频脚本与制作方案。</p>
         </article>
       </section>
 
@@ -46,7 +46,7 @@
             <button type="button" id="fillDemo" class="ghost">填入示例</button>
           </div>
           <label>门店/品牌名称
-            <input id="name" placeholder="例如：悦龄轻抗衰管理中心">
+            <input id="name" placeholder="例如：悦容轻抗衰管理中心">
           </label>
           <label>细分行业
             <select id="industry">
@@ -85,17 +85,17 @@
             </select>
           </label>
           <label>想达成的结果
-            <input id="goal" placeholder="例如：30天拿到80个咨询，成交10个体验客户">
+            <input id="goal" placeholder="例如：30天拿到30个咨询，成交10个体验客户">
           </label>
           <button type="button" id="generate" class="primary">生成获客中控方案</button>
         </aside>
 
         <section class="main-col">
           <nav class="tabs" aria-label="中控台视图">
-            <button class="tab active" data-tab="platform">三大功能</button>
-            <button class="tab" data-tab="diagnosis">获客诊断</button>
-            <button class="tab" data-tab="content">内容方案</button>
-            <button class="tab" data-tab="export">导出</button>
+            <button type="button" class="tab active" data-tab="platform">三大功能</button>
+            <button type="button" class="tab" data-tab="diagnosis">获客诊断</button>
+            <button type="button" class="tab" data-tab="content">内容方案</button>
+            <button type="button" class="tab" data-tab="export">导出</button>
           </nav>
 
           <section id="platform" class="tab-panel active">
@@ -119,6 +119,7 @@
                 <button type="button" id="downloadAll" class="ghost">下载TXT</button>
               </div>
               <textarea id="fullReport" rows="18" readonly></textarea>
+              <p id="toast" class="toast" role="status" aria-live="polite"></p>
             </div>
           </section>
         </section>
