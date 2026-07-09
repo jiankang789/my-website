@@ -448,6 +448,108 @@
       letter-spacing: 0;
     }
 
+    .detail-report {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .detail-card {
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid #dde6fa;
+      box-shadow: 0 10px 24px rgba(87, 105, 150, 0.1);
+      padding: 14px;
+    }
+
+    .detail-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .level {
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      border-radius: 13px;
+      padding: 0 9px;
+      font-size: 12px;
+      color: #fff;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      white-space: nowrap;
+    }
+
+    .detail-card p {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .detail-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #53628e;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .diagnosis-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .diagnosis-row {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 10px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.74);
+      padding: 12px;
+    }
+
+    .diagnosis-row b {
+      color: #684dff;
+      font-size: 14px;
+    }
+
+    .diagnosis-row span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 10px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid #dde6fa;
+      padding: 12px;
+    }
+
+    .timeline-item strong {
+      color: #4775ff;
+      font-size: 14px;
+    }
+
+    .timeline-item span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
     .suggest-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -891,6 +993,21 @@
         <div class="metric"><b>垮</b><strong id="acneScore">78/100</strong><span class="stars">★★★★★</span></div>
         <div class="metric"><b>垂</b><strong id="poreScore">60/100</strong><span class="stars">★★★★★</span></div>
       </div>
+      <div class="detail-report">
+        <article class="detail-card">
+          <h3>综合判断 <span class="level" id="reportLevel">重点关注：松垮疲态</span></h3>
+          <p id="reportSummary">当前年轻态信号主要集中在纹路初显、皮肤松弛感和中下面部垮感。建议先稳定肤相补水修护，再进入29点位分层护理，避免一上来就做强刺激护理。</p>
+          <ul id="reportHighlights">
+            <li>纹：眼周、法令区和干纹感需要优先做补水修护。</li>
+            <li>松：弹润感不足，适合做雾化补水和微米级精华导入。</li>
+            <li>垮/垂：中下面部疲态明显，适合29点位分层护理承接。</li>
+          </ul>
+        </article>
+        <article class="detail-card">
+          <h3>顾客沟通重点 <span class="level">成交引导</span></h3>
+          <p id="talkTrack">可以先问顾客：“您更介意纹路显年龄，还是脸看起来垮、没精神？”再用检测结果解释：纹是表层信号，松垮垂是轮廓疲态信号，需要分层护理。</p>
+        </article>
+      </div>
     </section>
 
     <section class="section">
@@ -960,6 +1077,34 @@
           <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path></svg>
           <span id="projectFit">适合项目：唐曾三相年轻态项目</span>
         </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>三相归因报告</h2>
+      <div class="diagnosis-grid">
+        <div class="diagnosis-row">
+          <b>肤相</b>
+          <span id="skinCause">皮肤含水感和细腻度不足，会放大干纹、暗沉和粗糙感，是纹路初显的第一层原因。</span>
+        </div>
+        <div class="diagnosis-row">
+          <b>形相</b>
+          <span id="shapeCause">面部支撑感和轮廓清晰度下降，容易表现为脸垮、下颌线模糊、苹果肌支撑不足。</span>
+        </div>
+        <div class="diagnosis-row">
+          <b>神相</b>
+          <span id="spiritCause">熬夜、压力和睡眠不足会让气色变差，进一步放大纹、松、垮、垂的视觉疲态。</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4周护理节奏</h2>
+      <div class="timeline" id="careTimeline">
+        <div class="timeline-item"><strong>第1周</strong><span>阿拉丁少女肌雾化生美仪 + 温和补水修护，先让肤相稳定下来。</span></div>
+        <div class="timeline-item"><strong>第2周</strong><span>加入56项微米透导精华护理，重点处理干纹、暗沉和细腻度。</span></div>
+        <div class="timeline-item"><strong>第3周</strong><span>面部29点位分层护理，针对松、垮、垂做轮廓疲态管理。</span></div>
+        <div class="timeline-item"><strong>第4周</strong><span>复测纹松垮垂评分，生成对比报告，并制定下一周期方案。</span></div>
       </div>
     </section>
 
@@ -1047,7 +1192,26 @@
         pore: 60,
         skinType: "年轻态倾向：纹路初显 + 松垮疲态",
         priority: "优先建议：先补水修护，再做29点位分层护理",
-        fit: "适合项目：唐曾三相年轻态项目"
+        fit: "适合项目：唐曾三相年轻态项目",
+        level: "重点关注：松垮疲态",
+        summary: "当前年轻态信号主要集中在纹路初显、皮肤松弛感和中下面部垮感。建议先稳定肤相补水修护，再进入29点位分层护理，避免一上来就做强刺激护理。",
+        highlights: [
+          "纹：眼周、法令区和干纹感需要优先做补水修护。",
+          "松：弹润感不足，适合做雾化补水和微米级精华导入。",
+          "垮/垂：中下面部疲态明显，适合29点位分层护理承接。"
+        ],
+        talk: "可以先问顾客：“您更介意纹路显年龄，还是脸看起来垮、没精神？”再用检测结果解释：纹是表层信号，松垮垂是轮廓疲态信号，需要分层护理。",
+        causes: [
+          "皮肤含水感和细腻度不足，会放大干纹、暗沉和粗糙感，是纹路初显的第一层原因。",
+          "面部支撑感和轮廓清晰度下降，容易表现为脸垮、下颌线模糊、苹果肌支撑不足。",
+          "熬夜、压力和睡眠不足会让气色变差，进一步放大纹、松、垮、垂的视觉疲态。"
+        ],
+        timeline: [
+          "阿拉丁少女肌雾化生美仪 + 温和补水修护，先让肤相稳定下来。",
+          "加入56项微米透导精华护理，重点处理干纹、暗沉和细腻度。",
+          "面部29点位分层护理，针对松、垮、垂做轮廓疲态管理。",
+          "复测纹松垮垂评分，生成对比报告，并制定下一周期方案。"
+        ]
       },
       {
         progress: 82,
@@ -1058,7 +1222,26 @@
         pore: 73,
         skinType: "年轻态倾向：中面部垮感 + 下颌线模糊",
         priority: "优先建议：阿拉丁雾化 + 29点位分层护理",
-        fit: "适合项目：三相年轻态4周管理"
+        fit: "适合项目：三相年轻态4周管理",
+        level: "重点关注：垮感与下垂",
+        summary: "本次检测显示中下面部垮感、下颌线模糊和苹果肌支撑不足更突出。护理重点不只是补水，而是要把肤相修护和形相分层护理组合起来。",
+        highlights: [
+          "垮：中面部支撑感不足，容易让法令区和嘴角显疲态。",
+          "垂：下颌线清晰度下降，需要面颈连接和轮廓线同步护理。",
+          "纹：干纹不是单独问题，常被松垮和疲态放大。"
+        ],
+        talk: "可以这样引导：“您说的脸垮，不只是某一道纹的问题，而是中下面部疲态、下颌线和气色一起影响。我们先做雾化稳肤，再用29点位做分层护理。”",
+        causes: [
+          "肤相：缺水和屏障不稳会让细纹、暗沉更明显，因此第一步仍要先稳肤。",
+          "形相：中面部和下颌缘是本次重点，适合用29点位分层护理建立标准路径。",
+          "神相：疲态和睡眠不足会让垮感更明显，需要配合头面放松和作息建议。"
+        ],
+        timeline: [
+          "第1次做阿拉丁雾化补水，降低干纹和紧绷感。",
+          "第2次加入29点位分层护理，重点做中面部、下颌线和面颈连接。",
+          "第3次做微米级精华导入，强化细腻度和弹润体验。",
+          "第4次复测并拍照对比，评估轮廓疲态和下颌线变化。"
+        ]
       },
       {
         progress: 93,
@@ -1069,7 +1252,26 @@
         pore: 76,
         skinType: "年轻态倾向：纹松垮垂综合管理型",
         priority: "优先建议：56项微米透导 + 年轻态修护精华",
-        fit: "适合项目：唐曾三相年轻态项目升级版"
+        fit: "适合项目：唐曾三相年轻态项目升级版",
+        level: "综合管理：进入周期护理",
+        summary: "本次结果适合进入完整周期管理。纹、松、垮、垂不是单点问题，建议用“雾化补水、微米透导、29点位分层、年轻态精华护理”形成连续护理闭环。",
+        highlights: [
+          "纹：需要补水、精华导入和居家防晒共同管理。",
+          "松：需要周期护理，不建议只做单次体验就判断效果。",
+          "垮/垂：建议以4周为一个复盘周期，观察轮廓疲态和精神感。"
+        ],
+        talk: "可以强调：“您不是单一皮肤问题，更适合做三相年轻态周期管理。我们每周有重点，月底复测，让护理结果更可解释。”",
+        causes: [
+          "肤相：通过雾化和精华导入提升水润、细腻、光泽感。",
+          "形相：通过29点位分层护理管理松垮、下垂和面颈连接疲态。",
+          "神相：通过头面放松、睡眠建议和周期复盘改善整体精神感。"
+        ],
+        timeline: [
+          "第1周：雾化补水 + 屏障舒缓，建立护理基础。",
+          "第2周：56项微米透导 + 年轻态修护精华护理，处理纹路和肤质。",
+          "第3周：29点位分层护理，重点管理松、垮、垂。",
+          "第4周：完整复测 + 顾问定制下阶段方案，推动复购转化。"
+        ]
       }
     ];
 
@@ -1095,6 +1297,14 @@
       document.getElementById("skinType").textContent = data.skinType;
       document.getElementById("priority").textContent = data.priority;
       document.getElementById("projectFit").textContent = data.fit;
+      document.getElementById("reportLevel").textContent = data.level;
+      document.getElementById("reportSummary").textContent = data.summary;
+      document.getElementById("reportHighlights").innerHTML = data.highlights.map((item) => `<li>${item}</li>`).join("");
+      document.getElementById("talkTrack").textContent = data.talk;
+      document.getElementById("skinCause").textContent = data.causes[0];
+      document.getElementById("shapeCause").textContent = data.causes[1];
+      document.getElementById("spiritCause").textContent = data.causes[2];
+      document.getElementById("careTimeline").innerHTML = data.timeline.map((item, index) => `<div class="timeline-item"><strong>第${index + 1}周</strong><span>${item.replace(/^第\\d周：?/, "")}</span></div>`).join("");
     }
 
     function nextScan() {
