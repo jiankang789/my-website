@@ -1,1208 +1,408 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>唐曾-三相年轻态AI面诊工具</title>
-  <style>
-    :root {
-      --ink: #172653;
-      --muted: #7480a4;
-      --blue: #4775ff;
-      --violet: #a23cff;
-      --soft: #edf3ff;
-      --line: #dbe5fb;
-      --card: rgba(255, 255, 255, 0.86);
-      --shadow: 0 18px 42px rgba(83, 111, 190, 0.18);
-      --radius: 24px;
-      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-      color: var(--ink);
-    }
-
-    * { box-sizing: border-box; }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        linear-gradient(90deg, rgba(106, 133, 224, 0.12) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(106, 133, 224, 0.12) 1px, transparent 1px),
-        radial-gradient(circle at 50% 0%, rgba(167, 197, 255, 0.58), transparent 38%),
-        #eef4ff;
-      background-size: 96px 96px, 96px 96px, auto, auto;
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    button {
-      border: 0;
-      cursor: pointer;
-    }
-
-    .phone {
-      width: min(100vw, 430px);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 22px 16px 108px;
-      position: relative;
-      background:
-        linear-gradient(90deg, rgba(106, 133, 224, 0.1) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(106, 133, 224, 0.1) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(250,252,255,0.84), rgba(236,243,255,0.76));
-      background-size: 68px 68px, 68px 68px, auto;
-      box-shadow: 0 0 0 1px rgba(188, 202, 240, 0.52), 0 30px 90px rgba(29, 47, 98, 0.24);
-    }
-
-    .entry-link {
-      display: inline-flex;
-      align-items: center;
-      min-height: 30px;
-      margin-bottom: 8px;
-      color: #4967c9;
-      font-size: 12px;
-      font-weight: 900;
-      text-decoration: none;
-    }
-
-    .topbar {
-      display: grid;
-      grid-template-columns: 34px minmax(0, 1fr) 32px 32px 104px;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 20px;
-    }
-
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.56);
-      box-shadow: inset 0 0 0 1px rgba(62, 86, 150, 0.12);
-    }
-
-    .icon-btn svg {
-      width: 21px;
-      height: 21px;
-      stroke: currentColor;
-      stroke-width: 2.4;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .title {
-      margin: 0;
-      text-align: center;
-      font-size: 23px;
-      line-height: 1;
-      letter-spacing: 0;
-      white-space: nowrap;
-    }
-
-    .login {
-      min-height: 44px;
-      border-radius: 26px;
-      background: #23375f;
-      color: #fff;
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.18), 0 10px 24px rgba(35, 55, 95, 0.22);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 800;
-      font-size: 14px;
-      padding: 0 12px;
-    }
-
-    .lead-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: -6px 0 16px;
-    }
-
-    .lead-actions button {
-      min-height: 44px;
-      border-radius: 22px;
-      font-weight: 900;
-      color: var(--ink);
-      background: #fff;
-      box-shadow: 0 10px 22px rgba(83, 111, 190, 0.14);
-    }
-
-    .lead-actions .signup {
-      color: #fff;
-      background: linear-gradient(90deg, var(--blue), var(--violet));
-    }
-
-    .scan-shell {
-      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.72));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-
-    .scan-stage {
-      min-height: 328px;
-      position: relative;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 38%, rgba(180, 89, 255, 0.2), transparent 26%),
-        radial-gradient(circle at 50% 38%, rgba(72, 228, 255, 0.2), transparent 44%),
-        linear-gradient(180deg, #f8fbff, #eef5ff);
-    }
-
-    .scan-stage::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      border: 1px solid rgba(117, 145, 228, 0.26);
-      background:
-        linear-gradient(90deg, transparent 49.5%, rgba(151, 93, 255, 0.58) 49.5% 50.5%, transparent 50.5%),
-        linear-gradient(0deg, transparent 49.5%, rgba(229, 108, 255, 0.48) 49.5% 50.5%, transparent 50.5%),
-        radial-gradient(circle, transparent 42%, rgba(151, 93, 255, 0.08) 43%, transparent 44%),
-        radial-gradient(circle, transparent 58%, rgba(71, 117, 255, 0.08) 59%, transparent 60%);
-      pointer-events: none;
-    }
-
-    .scan-label {
-      position: absolute;
-      z-index: 2;
-      color: #315ecb;
-      font-weight: 800;
-      font-size: 15px;
-      text-shadow: 0 1px 0 #fff;
-    }
-
-    .l1 { left: 0; top: 58px; }
-    .l2 { left: 0; top: 128px; }
-    .l3 { left: 0; bottom: 56px; }
-    .r1 { right: 0; top: 58px; }
-    .r2 { right: 0; top: 128px; }
-    .r3 { right: 0; bottom: 56px; }
-
-    .portrait {
-      width: min(76%, 286px);
-      aspect-ratio: 0.8;
-      position: relative;
-      display: grid;
-      place-items: end center;
-      border-radius: 46px;
-      background: #eef5ff url("tangzeng-beauty-face-scan.png") center / cover no-repeat;
-      overflow: hidden;
-      box-shadow: inset 0 0 58px rgba(116, 141, 255, 0.18);
-    }
-
-    .portrait::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, transparent 49.7%, rgba(255,255,255,0.64) 49.7% 50.3%, transparent 50.3%),
-        linear-gradient(0deg, transparent 49.7%, rgba(255,255,255,0.44) 49.7% 50.3%, transparent 50.3%),
-        radial-gradient(circle at 50% 50%, transparent 54%, rgba(255,255,255,0.18) 55%, transparent 56%);
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .camera-feed {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: scaleX(-1);
-      opacity: 0;
-      transition: opacity 260ms ease;
-      z-index: 1;
-      background: #111;
-    }
-
-    .portrait.camera-on .camera-feed {
-      opacity: 1;
-    }
-
-    .camera-status {
-      position: absolute;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      z-index: 8;
-      min-height: 30px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 12px;
-      border-radius: 15px;
-      background: rgba(23, 38, 83, 0.72);
-      color: #fff;
-      font-size: 12px;
-      font-weight: 900;
-      backdrop-filter: blur(12px);
-    }
-
-    .corner {
-      position: absolute;
-      width: 54px;
-      height: 54px;
-      border-color: #aefaff;
-      z-index: 5;
-      opacity: 0.9;
-    }
-
-    .c1 { left: 64px; top: 62px; border-top: 4px solid; border-left: 4px solid; border-radius: 24px 0 0 0; }
-    .c2 { right: 64px; top: 62px; border-top: 4px solid; border-right: 4px solid; border-radius: 0 24px 0 0; }
-    .c3 { left: 64px; bottom: 60px; border-bottom: 4px solid; border-left: 4px solid; border-radius: 0 0 0 24px; }
-    .c4 { right: 64px; bottom: 60px; border-bottom: 4px solid; border-right: 4px solid; border-radius: 0 0 24px 0; }
-
-    .scan-line {
-      position: absolute;
-      left: 34px;
-      right: 34px;
-      top: 106px;
-      height: 5px;
-      border-radius: 99px;
-      background: linear-gradient(90deg, transparent, #6ef0ff, #ea60ff, transparent);
-      box-shadow: 0 0 18px rgba(225, 83, 255, 0.5);
-      animation: scanMove 2.4s ease-in-out infinite;
-      z-index: 6;
-    }
-
-    .portrait.scanning .scan-line {
-      animation-duration: 1.1s;
-    }
-
-    @keyframes scanMove {
-      0%, 100% { transform: translateY(-22px); opacity: 0.72; }
-      50% { transform: translateY(130px); opacity: 1; }
-    }
-
-    .scan-caption {
-      margin: 12px 0 12px;
-      text-align: center;
-      font-weight: 900;
-      font-size: 20px;
-    }
-
-    .progress {
-      position: relative;
-      height: 18px;
-      border-radius: 999px;
-      background: #dfe8ff;
-      overflow: hidden;
-      box-shadow: inset 0 0 0 1px rgba(65, 96, 175, 0.08);
-    }
-
-    .progress span {
-      display: block;
-      height: 100%;
-      width: 65%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--blue), var(--violet));
-      transition: width 360ms ease;
-    }
-
-    .progress b {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 15px;
-    }
-
-    .primary {
-      width: 100%;
-      min-height: 64px;
-      margin-top: 14px;
-      border-radius: 32px;
-      background: linear-gradient(90deg, var(--blue), var(--violet));
-      color: #fff;
-      font-size: 22px;
-      font-weight: 900;
-      box-shadow: 0 16px 34px rgba(111, 75, 255, 0.28);
-    }
-
-    .action-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin: 18px 0;
-    }
-
-    .action-card {
-      min-height: 74px;
-      border-radius: var(--radius);
-      background: #fff;
-      box-shadow: var(--shadow);
-      color: var(--ink);
-      font-weight: 900;
-      font-size: 20px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 10px;
-      line-height: 1.25;
-    }
-
-    .action-card small {
-      display: block;
-      margin-top: 3px;
-      color: #8a94b5;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .action-card.hot {
-      background: linear-gradient(90deg, var(--blue), var(--violet));
-      color: #fff;
-    }
-
-    .action-card.hot small {
-      color: rgba(255,255,255,0.78);
-    }
-
-    .section {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .section h2 {
-      margin: 0 0 14px;
-      font-size: 21px;
-      line-height: 1.25;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .section-head h2 {
-      margin: 0;
-    }
-
-    .rescan {
-      min-height: 46px;
-      padding: 0 14px;
-      border-radius: 23px;
-      background: #fff;
-      color: #4775ff;
-      box-shadow: 0 12px 26px rgba(77, 108, 201, 0.16);
-      font-size: 13px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .metric {
-      min-height: 94px;
-      border-radius: 18px;
-      background: linear-gradient(180deg, #fff, #f5f8ff);
-      box-shadow: 0 10px 24px rgba(87, 105, 150, 0.12);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 12px;
-    }
-
-    .metric b {
-      display: block;
-      font-size: 15px;
-    }
-
-    .metric strong {
-      display: block;
-      margin: 5px 0;
-      color: var(--blue);
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    .stars {
-      color: #ff9f1c;
-      font-size: 14px;
-      letter-spacing: 0;
-    }
-
-    .suggest-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .suggest {
-      min-height: 104px;
-      border-radius: 18px;
-      background: #fff;
-      border: 1px solid #dde6fa;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 12px 8px;
-    }
-
-    .suggest.active {
-      border-color: #b9a9ff;
-      background: #f4f2ff;
-    }
-
-    .suggest svg {
-      width: 28px;
-      height: 28px;
-      stroke: #2d4a88;
-      fill: none;
-      stroke-width: 2.3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      margin-bottom: 8px;
-    }
-
-    .suggest b {
-      display: block;
-      font-size: 15px;
-      color: #2d4a88;
-    }
-
-    .suggest span {
-      display: block;
-      margin-top: 4px;
-      color: #8a94b5;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .summary-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .summary-item {
-      min-height: 54px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.72);
-      padding: 12px;
-      font-size: 16px;
-      font-weight: 900;
-      line-height: 1.45;
-    }
-
-    .summary-item svg {
-      width: 24px;
-      height: 24px;
-      flex: 0 0 auto;
-      stroke: #2d4a88;
-      fill: none;
-      stroke-width: 2.3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .feature-card {
-      min-height: 112px;
-      border-radius: 20px;
-      background: linear-gradient(180deg, #ffffff, #f5f8ff);
-      border: 1px solid #dde6fa;
-      padding: 14px;
-      box-shadow: 0 10px 24px rgba(87, 105, 150, 0.1);
-    }
-
-    .feature-card strong {
-      display: block;
-      color: #4775ff;
-      font-size: 28px;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .feature-card b {
-      display: block;
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
-
-    .feature-card span {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .logic-line {
-      display: grid;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .logic-item {
-      display: grid;
-      grid-template-columns: 72px 1fr;
-      gap: 10px;
-      align-items: start;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.7);
-      padding: 12px;
-    }
-
-    .logic-item b {
-      color: #684dff;
-      font-size: 14px;
-    }
-
-    .logic-item span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .project-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .project-title h2 {
-      margin: 0;
-    }
-
-    .badge {
-      min-height: 30px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      border-radius: 15px;
-      background: #eef2ff;
-      color: #5465c7;
-      font-size: 12px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .project-steps {
-      display: grid;
-      gap: 10px;
-    }
-
-    .project-step {
-      display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 10px;
-      align-items: start;
-      border-radius: 18px;
-      background: #fff;
-      border: 1px solid #dde6fa;
-      padding: 12px;
-    }
-
-    .project-step strong {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--blue), var(--violet));
-      color: #fff;
-    }
-
-    .project-step b {
-      display: block;
-      font-size: 15px;
-      margin-bottom: 5px;
-    }
-
-    .project-step span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .note {
-      margin: 14px 0 0;
-      border-radius: 18px;
-      background: #fff7e5;
-      color: #7c5a16;
-      padding: 12px;
-      font-size: 12px;
-      line-height: 1.65;
-    }
-
-    .advisor-card {
-      min-height: 88px;
-      border-radius: 26px;
-      background: linear-gradient(135deg, #243b72, #4b63d8 54%, #9a42ff);
-      color: #fff;
-      box-shadow: 0 16px 34px rgba(81, 84, 207, 0.26);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-
-    .advisor-card b {
-      display: block;
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .advisor-card span {
-      color: rgba(255,255,255,0.76);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .advisor-card button {
-      min-height: 44px;
-      border-radius: 22px;
-      background: #fff;
-      color: #243b72;
-      padding: 0 14px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      display: none;
-      place-items: end center;
-      background: rgba(12, 22, 50, 0.38);
-      padding: 16px;
-    }
-
-    .modal.open {
-      display: grid;
-    }
-
-    .modal-card {
-      width: min(100%, 398px);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 24px 80px rgba(20, 35, 80, 0.32);
-      padding: 18px;
-    }
-
-    .modal-card h2 {
-      margin: 0 0 6px;
-      font-size: 22px;
-    }
-
-    .modal-card p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .lead-form {
-      display: grid;
-      gap: 10px;
-    }
-
-    .lead-form input,
-    .lead-form select {
-      width: 100%;
-      min-height: 48px;
-      border: 1px solid #d8e2f8;
-      border-radius: 18px;
-      background: #f9fbff;
-      color: var(--ink);
-      padding: 0 14px;
-      outline: none;
-    }
-
-    .lead-form input:focus,
-    .lead-form select:focus {
-      border-color: #8a71ff;
-      box-shadow: 0 0 0 4px rgba(138, 113, 255, 0.12);
-    }
-
-    .modal-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-
-    .modal-actions button {
-      min-height: 48px;
-      border-radius: 24px;
-      font-weight: 900;
-    }
-
-    .modal-actions .submit {
-      background: linear-gradient(90deg, var(--blue), var(--violet));
-      color: #fff;
-    }
-
-    .modal-actions .close {
-      background: #eef3ff;
-      color: #53628e;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 0;
-      transform: translateX(-50%);
-      width: min(100vw, 430px);
-      min-height: 74px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid #d4def4;
-      background: rgba(249, 251, 255, 0.96);
-      backdrop-filter: blur(18px);
-      z-index: 20;
-    }
-
-    .nav-item {
-      display: grid;
-      place-items: center;
-      align-content: center;
-      gap: 4px;
-      color: #7180ab;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .nav-item.active {
-      color: #765aff;
-    }
-
-    .nav-item svg {
-      width: 25px;
-      height: 25px;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 2.3;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    @media (max-width: 374px) {
-      .phone { padding-left: 10px; padding-right: 10px; }
-      .title { font-size: 20px; }
-      .topbar { grid-template-columns: 30px minmax(0,1fr) 30px 30px 90px; gap: 5px; }
-      .icon-btn { width: 30px; height: 30px; }
-      .login { font-size: 12px; padding: 0 8px; min-height: 40px; }
-      .scan-label { font-size: 13px; }
-      .primary { font-size: 19px; }
-      .action-card { font-size: 17px; }
-      .feature-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-  <main class="phone">
-    <a class="entry-link" href="#plan">三项目入口</a>
-    <header class="topbar">
-      <button class="icon-btn" type="button" aria-label="智能面诊">
-        <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"></path></svg>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="唐曾说AI，面向传统老板和实体商家，用AI智能体、数字人短视频、私域成交话术和行业项目包装，搭建能落地的AI获客增长系统。"
+    />
+    <title>唐曾说AI | 传统老板的AI增长教练</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="官网导航">
+      <a class="brand" href="#top" aria-label="唐曾说AI 首页">
+        <span class="brand-mark">C</span>
+        <span class="brand-text">
+          <strong>唐曾说AI</strong>
+          <small>Cotex智能体铁军</small>
+        </span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="主要导航">
+        <a href="#about">个人定位</a>
+        <a href="#capability">核心能力</a>
+        <a href="#solutions">行业方案</a>
+        <a href="#cases">落地案例</a>
+        <a href="#content-studio">拍摄文案</a>
+        <a href="#process">合作流程</a>
+      </nav>
+
+      <button class="menu-button" type="button" id="menuButton" aria-expanded="false" aria-controls="mobileNav">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <h1 class="title">AI年轻态面诊</h1>
-      <button class="icon-btn" type="button" aria-label="说明">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 10v7"></path><path d="M12 7h.01"></path></svg>
-      </button>
-      <button class="icon-btn" type="button" aria-label="设置">
-        <svg viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6V20a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-.5 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1H4a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 .5-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6V4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 .5 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.18.34.4.67.6 1H20a2 2 0 1 1 0 4h-.1c-.2.33-.42.66-.5 1z"></path></svg>
-      </button>
-      <button class="login" id="loginBtn" type="button">登录 / 注册</button>
+
+      <a class="header-action" href="#contact">领取方案</a>
     </header>
 
-    <div class="lead-actions">
-      <button type="button" id="quickLoginBtn">登录</button>
-      <button class="signup" type="button" id="quickSignupBtn">注册领报告</button>
-    </div>
+    <nav class="mobile-nav" id="mobileNav" aria-label="移动导航" hidden>
+      <a href="#about">个人定位</a>
+      <a href="#capability">核心能力</a>
+      <a href="#solutions">行业方案</a>
+      <a href="#cases">落地案例</a>
+      <a href="#content-studio">拍摄文案</a>
+      <a href="#process">合作流程</a>
+      <a href="#contact">咨询方案</a>
+    </nav>
 
-    <section class="scan-shell" id="scan">
-      <div class="scan-stage">
-        <span class="scan-label l1">纹路显现</span>
-        <span class="scan-label l2">松弛程度</span>
-        <span class="scan-label l3">下颌垮感</span>
-        <span class="scan-label r1">轮廓下垂</span>
-        <span class="scan-label r2">苹果肌支撑</span>
-        <span class="scan-label r3">疲态气色</span>
-        <div class="portrait" id="portrait">
-          <video class="camera-feed" id="cameraFeed" autoplay muted playsinline></video>
-          <i class="corner c1"></i>
-          <i class="corner c2"></i>
-          <i class="corner c3"></i>
-          <i class="corner c4"></i>
-          <div class="scan-line"></div>
-          <span class="camera-status" id="cameraStatus">前置镜头待启动</span>
+    <main id="top">
+      <section class="hero">
+        <img class="hero-bg" src="./assets/hero-ai-command-tangzeng.png" alt="唐曾说AI实体商家AI增长作战中台" />
+        <div class="hero-overlay"></div>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">AI智能体铁军 / 实体商家增长系统</p>
+            <h1>唐曾说AI</h1>
+            <p class="hero-belief">AI不是玩具，是老板的第二增长团队。</p>
+            <p class="hero-claim">
+              我帮传统老板把经验、项目、短视频、数字人、私域话术和成交流程，组装成一套能跑起来的AI获客系统。
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="#contact">获取企业官网方案</a>
+              <a class="button secondary" href="#capability">查看能力矩阵</a>
+            </div>
+          </div>
+          <aside class="hero-proof" aria-label="业务沉淀数据">
+            <div>
+              <strong>13</strong>
+              <span>数字分身岗位</span>
+            </div>
+            <div>
+              <strong>4</strong>
+              <span>获客工厂模块</span>
+            </div>
+            <div>
+              <strong>30天</strong>
+              <span>最小闭环落地</span>
+            </div>
+          </aside>
         </div>
-      </div>
-      <p class="scan-caption" id="scanCaption">纹、松、垮、垂检测完成</p>
-      <div class="progress">
-        <span id="progressFill"></span>
-        <b id="progressText">65%</b>
-      </div>
-      <button class="primary" id="scanBtn" type="button">开启前置镜头扫描</button>
-    </section>
+      </section>
 
-    <div class="action-grid">
-      <button class="action-card hot" id="reportBtn" type="button">领取完整报告<small>手机号接收报告</small></button>
-      <button class="action-card" id="planBtn" type="button">获取定制方案<small>顾问跟进</small></button>
-    </div>
+      <section class="signal-strip" aria-label="品牌定位">
+        <div>
+              <strong>我们服务谁</strong>
+          <span>传统老板、实体门店、美业项目方、AI转型学习者</span>
+        </div>
+        <div>
+          <strong>我们解决什么</strong>
+          <span>不会用AI、不会拍内容、不会承接私域、不会标准化成交</span>
+        </div>
+        <div>
+          <strong>我们交付什么</strong>
+          <span>AI智能体工作流、短视频脚本、数字人素材、行业落地方案</span>
+        </div>
+      </section>
 
-    <section class="section" id="report">
-      <div class="section-head">
-        <h2>纹松垮垂分析报告</h2>
-        <button class="rescan" id="rescanTop" type="button">重新扫描</button>
-      </div>
-      <div class="metric-grid">
-        <div class="metric"><b>纹</b><strong id="fineScore">65/100</strong><span class="stars">★★★★★</span></div>
-        <div class="metric"><b>松</b><strong id="toneScore">55/100</strong><span class="stars">★★★★★</span></div>
-        <div class="metric"><b>垮</b><strong id="acneScore">78/100</strong><span class="stars">★★★★★</span></div>
-        <div class="metric"><b>垂</b><strong id="poreScore">60/100</strong><span class="stars">★★★★★</span></div>
-      </div>
-    </section>
+      <section class="section intro-band" id="about">
+        <div class="intro-grid">
+          <div>
+            <p class="eyebrow">半年沉淀，不是散点工具</p>
+            <h2>你的内容核心，是把AI讲成老板听得懂、用得上的生意工具。</h2>
+          </div>
+          <p>
+            从 Cotex 智能体铁军、短视频获客生成器，到美业轻抗衰资料包、榛栗塑项目招商包装、自然阳光舌象营养观察资料，你这半年一直在做同一件事：把AI从概念变成实体商家能看见、能复制、能成交的工作流。官网要做的事，就是把这套能力讲清楚、讲可信、讲成可咨询、可合作、可持续输出内容的个人品牌阵地。
+          </p>
+        </div>
 
-    <section class="section">
-      <h2>唐曾四维年轻态检测</h2>
-      <div class="feature-grid">
-        <div class="feature-card">
-          <strong>纹</strong>
-          <b>表情纹、干纹、细纹</b>
-          <span>引导顾客关注“看起来显年龄”的第一层信号。</span>
+        <div class="identity-panel">
+          <img src="./assets/tangzeng-portrait.jpg" alt="唐曾说AI个人形象" />
+          <div>
+            <p class="eyebrow">个人品牌定位</p>
+            <h3>传统老板的AI增长教练</h3>
+            <p>
+              你不是单纯教软件操作，而是帮老板回答三个问题：我的生意怎么用AI获客，我的内容怎么持续拍，我的客户怎么从咨询走到成交。
+            </p>
+            <div class="identity-tags">
+              <span>AI智能体</span>
+              <span>实体获客</span>
+              <span>数字人短视频</span>
+              <span>私域成交</span>
+              <span>项目招商包装</span>
+            </div>
+          </div>
         </div>
-        <div class="feature-card">
-          <strong>松</strong>
-          <b>皮肤弹性下降</b>
-          <span>对应肤相和形相之间的状态变化，适合先做修护和导入护理。</span>
-        </div>
-        <div class="feature-card">
-          <strong>垮</strong>
-          <b>中下面部疲态</b>
-          <span>顾客常说的“脸垮了”，可引导到29点位分层护理。</span>
-        </div>
-        <div class="feature-card">
-          <strong>垂</strong>
-          <b>轮廓线下移</b>
-          <span>对应面颈连接、下颌线和苹果肌支撑感的周期管理。</span>
-        </div>
-      </div>
-      <div class="logic-line">
-        <div class="logic-item"><b>顾客入口</b><span>先聊顾客最关心的纹、松、垮、垂，问题更直观，咨询更容易进入。</span></div>
-        <div class="logic-item"><b>专业归因</b><span>再用肤相、形相、神相解释原因：肤质、轮廓疲态、作息气色共同影响年轻态。</span></div>
-        <div class="logic-item"><b>项目承接</b><span>最后匹配唐曾三相年轻态项目，形成“检测-护理-复盘”的闭环。</span></div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <h2>年轻态改善建议</h2>
-      <div class="suggest-grid">
-        <div class="suggest active">
-          <svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.2 8.1-7 10-3.8-1.9-7-5-7-10V6l7-3z"></path><path d="M9 12l2 2 4-5"></path></svg>
-          <b>稳肤修护</b><span>先稳肤相</span>
+      <section class="section" id="capability">
+        <div class="section-heading">
+          <p class="eyebrow">核心能力</p>
+          <h2>让一个老板，也能调度一支AI增长团队。</h2>
+          <p>围绕实体商家的获客、承接、成交和复购，搭建可复制的智能体流程。</p>
         </div>
-        <div class="suggest">
-          <svg viewBox="0 0 24 24"><path d="M7 14c0 3 2.2 5 5 5s5-2 5-5c0-3-5-9-5-9s-5 6-5 9z"></path><path d="M17.5 7.5c1.8 1.1 3 3.2 3 5.5"></path></svg>
-          <b>雾化补水</b><span>淡化干纹感</span>
-        </div>
-        <div class="suggest">
-          <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"></path></svg>
-          <b>分层点位</b><span>管理松垮感</span>
-        </div>
-        <div class="suggest">
-          <svg viewBox="0 0 24 24"><path d="M20 12.5A7.5 7.5 0 1 1 11.5 4c-.4 1.2-.3 2.6.4 3.8a5 5 0 0 0 6.3 2.2c.7-.3 1.3-.7 1.8-1.2.1 1.3.1 2.5 0 3.7z"></path><path d="M17 4h3v3"></path></svg>
-          <b>气色管理</b><span>降低疲态感</span>
-        </div>
-      </div>
-    </section>
 
-    <section class="section">
-      <div class="summary-list">
-        <div class="summary-item">
-          <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path></svg>
-          <span id="skinType">年轻态倾向：纹路初显 + 松垮疲态</span>
+        <div class="capability-grid">
+          <article class="capability-card">
+            <span>01</span>
+            <h3>AI智能体获客系统</h3>
+            <p>生成同城短视频脚本、朋友圈文案、社群活动、顾客邀约、异议处理和复购提醒，降低内容运营成本。</p>
+          </article>
+          <article class="capability-card">
+            <span>02</span>
+            <h3>短视频与数字人工厂</h3>
+            <p>把产品、客户、痛点和卖点拆成口播脚本、封面标题、置顶评论、分镜字幕和9:16竖屏视频任务。</p>
+          </article>
+          <article class="capability-card">
+            <span>03</span>
+            <h3>私域成交话术库</h3>
+            <p>按“先共情、再确认需求、再给建议、最后轻邀约”的顾问式成交逻辑，沉淀咨询转化SOP。</p>
+          </article>
+          <article class="capability-card">
+            <span>04</span>
+            <h3>行业项目包装</h3>
+            <p>把项目定位、价格梯度、招商话术、门店交付流程、合规禁用词和朋友圈素材打包成可招商方案。</p>
+          </article>
         </div>
-        <div class="summary-item">
-          <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path></svg>
-          <span id="priority">优先建议：先补水修护，再做29点位分层护理</span>
-        </div>
-        <div class="summary-item">
-          <svg viewBox="0 0 24 24"><path d="M12 3l1.6 5.2L19 10l-5.4 1.8L12 17l-1.6-5.2L5 10l5.4-1.8L12 3z"></path></svg>
-          <span id="projectFit">适合项目：唐曾三相年轻态项目</span>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section" id="plan">
-      <div class="project-title">
-        <h2>定制项目方案</h2>
-        <span class="badge">三相年轻态</span>
-      </div>
-      <div class="project-steps">
-        <div class="project-step">
-          <strong>1</strong>
-          <div><b>阿拉丁少女肌雾化生美仪</b><span>承接肤相补水、舒缓、细腻度和光泽感管理，适合检测后的第一步护理。</span></div>
+      <section class="section dark-band">
+        <div class="section-heading compact">
+          <p class="eyebrow">Cotex智能体铁军</p>
+          <h2>13个岗位，接走老板每天重复消耗的工作。</h2>
         </div>
-        <div class="project-step">
-          <strong>2</strong>
-          <div><b>面部29点位分层抗衰</b><span>按额部、眼周、中面部、下颌缘、颈部做标准化点位护理，主攻形相疲态。</span></div>
+        <div class="army-grid" id="armyGrid" aria-label="13个数字分身岗位">
+          <button type="button" data-role="规划铁军">规划</button>
+          <button type="button" data-role="开发铁军">开发</button>
+          <button type="button" data-role="产品铁军">产品</button>
+          <button type="button" data-role="流量铁军">流量</button>
+          <button type="button" data-role="私域铁军">私域</button>
+          <button type="button" data-role="成交铁军">成交</button>
+          <button type="button" data-role="交付铁军">交付</button>
+          <button type="button" data-role="赋能铁军">赋能</button>
+          <button type="button" data-role="资产铁军">资产</button>
+          <button type="button" data-role="数据铁军">数据</button>
+          <button type="button" data-role="品牌铁军">品牌</button>
+          <button type="button" data-role="增长铁军">增长</button>
+          <button type="button" data-role="裂变铁军">裂变</button>
         </div>
-        <div class="project-step">
-          <strong>3</strong>
-          <div><b>56项微米透导技术</b><span>对客建议表达为“微米级精华导入护理”，用于提升护理贴合感和肤质体验。</span></div>
-        </div>
-        <div class="project-step">
-          <strong>4</strong>
-          <div><b>NK细胞抗衰老精华</b><span>内部可作为产品识别名；对客建议表达为“年轻态修护精华护理”，避免医学治疗联想。</span></div>
-        </div>
-      </div>
-      <p class="note">合规提示：本工具用于生活美容咨询、状态评估和护理建议，不作为医学诊断、医疗美容治疗方案或疗效承诺。门店话术建议使用“状态管理、补水修护、光泽感、疲态舒缓、周期复盘”。</p>
-    </section>
+        <article class="role-panel" id="rolePanel">
+          <p class="role-kicker">当前岗位</p>
+          <h3>流量铁军</h3>
+          <p>负责把老板经验和产品卖点拆成短视频选题、口播脚本、直播预热、朋友圈内容和同城引流动作。</p>
+        </article>
+      </section>
 
-    <section class="advisor-card">
+      <section class="section" id="solutions">
+        <div class="section-heading">
+          <p class="eyebrow">行业方案</p>
+          <h2>先从高需求行业切入，再复制到更多实体场景。</h2>
+        </div>
+
+        <div class="solution-grid">
+          <article>
+            <h3>美业轻抗衰门店</h3>
+            <p>围绕安全表达、内容获客、私域承接和咨询转化，输出30条选题、10条AI提示词、20句转化话术。</p>
+            <ul>
+              <li>门店老板IP定位</li>
+              <li>短视频与朋友圈内容</li>
+              <li>顾问式成交SOP</li>
+            </ul>
+          </article>
+          <article>
+            <h3>项目招商与渠道合作</h3>
+            <p>把产品、仪器、培训、物料、运营和AI获客支持，包装成单店、区县、市级合作模式。</p>
+            <ul>
+              <li>招商主张与价格梯度</li>
+              <li>门店标准交付流程</li>
+              <li>合规话术与禁用词</li>
+            </ul>
+          </article>
+          <article>
+            <h3>本地生活实体商家</h3>
+            <p>用公众号内容、短视频、数字人分享和线索沉淀，帮助商家低成本启动视频号和直播获客链路。</p>
+            <ul>
+              <li>同城内容生产</li>
+              <li>私域线索中心</li>
+              <li>复购与老客激活</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section case-band" id="cases">
+        <div class="case-layout">
+          <div class="case-copy">
+            <p class="eyebrow">落地案例</p>
+            <h2>榛栗塑·原生精雕项目包装</h2>
+            <p>
+              面向美容院、皮肤管理中心和养生美肤门店，将“AI智能体低成本获客系统 + 面部29点位抗衰管理 + 56项无创微米透导技术 + 鲜活细胞灵感焕颜护理”组合成可招商、可成交、可复购的门店增长方案。
+            </p>
+            <div class="case-points">
+              <span>合规生活美容表达</span>
+              <span>三档合作模式</span>
+              <span>门店标准交付SOP</span>
+              <span>短视频口播与朋友圈素材</span>
+            </div>
+          </div>
+          <div class="case-showcase" aria-label="榛栗塑项目海报展示">
+            <button class="case-arrow" type="button" id="prevCase" aria-label="上一张案例图">‹</button>
+            <img id="caseImage" src="./assets/case-zhenlisu-growth-1.png" alt="榛栗塑招商海报：缺客户获客版" />
+            <button class="case-arrow" type="button" id="nextCase" aria-label="下一张案例图">›</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section proof-section">
+        <div class="section-heading compact">
+          <p class="eyebrow">已经沉淀的项目资产</p>
+          <h2>官网不是从零开始，而是在整理可销售的业务资产。</h2>
+        </div>
+
+        <div class="asset-grid">
+          <article>
+            <img src="./assets/agent-army-hero.png" alt="Cotex智能体铁军主视觉" />
+            <h3>Cotex智能体铁军</h3>
+            <p>创始人大脑、公众号工厂、短视频工厂、数字人工厂和线索中心。</p>
+          </article>
+          <article>
+            <img src="./assets/tangzeng-portrait.jpg" alt="唐曾说AI人物形象" />
+            <h3>老板IP与数字人分身</h3>
+            <p>用真人形象、声音样本和口播脚本，沉淀可持续分发的内容资产。</p>
+          </article>
+          <article>
+            <img src="./assets/case-zhenlisu-growth-2.png" alt="榛栗塑三核竞争力招商海报" />
+            <h3>行业招商物料</h3>
+            <p>把产品卖点、门店扶持、合作模式和合规提示做成招商资料。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section process-band" id="process">
+        <div class="section-heading">
+          <p class="eyebrow">合作流程</p>
+          <h2>从诊断到上线，先跑一个最小增长闭环。</h2>
+        </div>
+        <div class="process-list">
+          <article>
+            <span>01</span>
+            <h3>业务诊断</h3>
+            <p>确认行业、客群、产品结构、获客渠道、成交卡点和合规边界。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>系统搭建</h3>
+            <p>配置智能体分工、内容模板、私域话术、线索表和复盘看板。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>内容放量</h3>
+            <p>批量生成选题、脚本、数字人口播、朋友圈文案和直播预热。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>成交复盘</h3>
+            <p>围绕咨询率、加微率、成交率、复购率，调整话术与产品路径。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section content-studio" id="content-studio">
+        <div class="section-heading compact">
+          <p class="eyebrow">拍摄文案入口</p>
+          <h2>把你的内容方向，变成今天能拍的一条短视频。</h2>
+          <p>这是官网里的第一版轻量脚本生成器，后续可以继续接入你的资料库、案例库和声音/数字人流程。</p>
+        </div>
+
+        <div class="script-layout">
+          <form class="script-form" id="scriptForm">
+            <label>
+              今天想拍的主题
+              <input id="scriptTopic" type="text" value="传统老板为什么必须学会用AI智能体获客" />
+            </label>
+            <label>
+              目标观众
+              <select id="scriptAudience">
+                <option value="传统实体老板">传统实体老板</option>
+                <option value="美业门店老板">美业门店老板</option>
+                <option value="想做AI副业的人">想做AI副业的人</option>
+                <option value="项目招商负责人">项目招商负责人</option>
+              </select>
+            </label>
+            <label>
+              转化动作
+              <select id="scriptCta">
+                <option value="评论区打AI，领取AI获客诊断表">评论区打AI，领取AI获客诊断表</option>
+                <option value="私信我两个字：智能体">私信我两个字：智能体</option>
+                <option value="留言你的行业，我帮你拆一套AI流程">留言你的行业，我帮你拆一套AI流程</option>
+              </select>
+            </label>
+            <button class="button primary wide" type="submit">生成拍摄脚本</button>
+          </form>
+
+          <article class="script-card" id="scriptCard" aria-live="polite">
+            <p class="role-kicker">30秒口播脚本</p>
+            <h3 id="scriptTitle">传统老板不是缺努力，而是缺一套AI工作流</h3>
+            <div class="script-block" id="scriptOutput">
+              <p>很多传统老板现在最累的，不是产品不好，而是每天都在重复做内容、跟客户、催成交。</p>
+              <p>AI智能体真正的价值，不是替你玩软件，而是帮你把选题、脚本、私域话术和复盘流程固定下来。</p>
+              <p>你先不用追求复杂系统，先做一件事：把你每天最重复的3个动作交给AI，让它变成你的增长员工。</p>
+              <p>想要AI获客诊断表，在评论区打AI。</p>
+            </div>
+            <button class="button secondary wide" type="button" id="copyScript">复制拍摄脚本</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div class="contact-layout">
+          <div>
+            <p class="eyebrow">咨询方案</p>
+            <h2>先生成一张你的AI增长诊断卡。</h2>
+            <p>
+              填写业务类型和当前卡点，页面会在本地生成一份初步沟通卡，适合发给团队或作为官网咨询入口的第一版文案。
+            </p>
+          </div>
+
+          <form class="lead-form" id="leadForm">
+            <label>
+              业务类型
+              <input id="businessType" type="text" placeholder="如：美容院、皮肤管理、服装门店、知识服务" required />
+            </label>
+            <label>
+              当前卡点
+              <select id="painPoint">
+                <option value="缺内容">缺内容，不知道每天发什么</option>
+                <option value="缺线索">缺线索，视频有播放但没人咨询</option>
+                <option value="成交弱">成交弱，加了微信但转化低</option>
+                <option value="交付乱">交付乱，靠老板亲自盯</option>
+                <option value="表达怕违规">表达怕违规，不敢讲卖点</option>
+              </select>
+            </label>
+            <label>
+              主要产品/服务
+              <input id="mainOffer" type="text" placeholder="如：轻抗衰护理、项目招商、AI课程、女装穿搭" />
+            </label>
+            <button class="button primary wide" type="submit">生成诊断卡</button>
+          </form>
+
+          <article class="diagnosis-card" id="diagnosisCard" aria-live="polite">
+            <p class="role-kicker">AI增长诊断卡</p>
+            <h3>唐曾说AI会先帮你梳理获客闭环</h3>
+            <p id="diagnosisText">
+              这里会根据你的业务类型，生成优先启动的智能体岗位、7天动作和官网咨询话术。
+            </p>
+            <ul id="diagnosisList">
+              <li>优先梳理客群、产品和合规表达。</li>
+              <li>再启动内容生成、私域承接和成交话术。</li>
+              <li>最后用数据复盘沉淀可复制SOP。</li>
+            </ul>
+            <button class="button secondary wide" type="button" id="copyDiagnosis">复制诊断卡</button>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
       <div>
-        <b>加顾问微信，获取定制方案</b>
-        <span>提交手机号后，顾问可根据纹松垮垂报告安排到店体验。</span>
+        <strong>唐曾说AI.Cotex智能体铁军</strong>
+        <span>实体商家AI获客增长系统</span>
       </div>
-      <button id="advisorBtn" type="button">立即留资</button>
-    </section>
+      <p>宣传内容仅用于业务介绍，具体合作内容以双方确认的项目方案为准。</p>
+    </footer>
 
-    <button class="primary" id="bottomReportBtn" type="button">领取完整报告</button>
-  </main>
-
-  <div class="modal" id="leadModal" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
-    <div class="modal-card">
-      <h2 id="leadTitle">登录 / 注册领取报告</h2>
-      <p>填写联系方式后，可保存本次纹松垮垂检测报告，并由顾问生成唐曾三相年轻态项目方案。</p>
-      <form class="lead-form" id="leadForm">
-        <input id="leadName" name="name" placeholder="姓名 / 昵称" autocomplete="name">
-        <input id="leadPhone" name="phone" placeholder="手机号" inputmode="tel" autocomplete="tel" required>
-        <select id="leadConcern" name="concern">
-          <option>最关注：纹路明显</option>
-          <option>最关注：皮肤松弛</option>
-          <option>最关注：脸垮疲态</option>
-          <option>最关注：轮廓下垂</option>
-        </select>
-        <div class="modal-actions">
-          <button class="close" id="closeLead" type="button">稍后再说</button>
-          <button class="submit" type="submit">提交领取</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <nav class="bottom-nav">
-    <a class="nav-item active" href="#scan" aria-label="面诊">
-      <svg viewBox="0 0 24 24"><path d="M3 10.5L12 3l9 7.5"></path><path d="M5 10v10h5v-6h4v6h5V10"></path></svg>
-      <span>面诊</span>
-    </a>
-    <a class="nav-item" href="#report" aria-label="报告">
-      <svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v6h5"></path><path d="M10 13h6"></path><path d="M10 17h6"></path></svg>
-      <span>报告</span>
-    </a>
-    <a class="nav-item" href="#plan" aria-label="顾问">
-      <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"></path><path d="M4 21c1.5-4 14.5-4 16 0"></path></svg>
-      <span>顾问</span>
-    </a>
-  </nav>
-
-  <script>
-    const scans = [
-      {
-        progress: 65,
-        caption: "纹、松、垮、垂检测完成",
-        fine: 65,
-        tone: 55,
-        acne: 78,
-        pore: 60,
-        skinType: "年轻态倾向：纹路初显 + 松垮疲态",
-        priority: "优先建议：先补水修护，再做29点位分层护理",
-        fit: "适合项目：唐曾三相年轻态项目"
-      },
-      {
-        progress: 82,
-        caption: "三相归因复核完成",
-        fine: 71,
-        tone: 68,
-        acne: 84,
-        pore: 73,
-        skinType: "年轻态倾向：中面部垮感 + 下颌线模糊",
-        priority: "优先建议：阿拉丁雾化 + 29点位分层护理",
-        fit: "适合项目：三相年轻态4周管理"
-      },
-      {
-        progress: 93,
-        caption: "定制方案生成完成",
-        fine: 78,
-        tone: 74,
-        acne: 88,
-        pore: 76,
-        skinType: "年轻态倾向：纹松垮垂综合管理型",
-        priority: "优先建议：56项微米透导 + 年轻态修护精华",
-        fit: "适合项目：唐曾三相年轻态项目升级版"
-      }
-    ];
-
-    let scanIndex = 0;
-    let cameraStream = null;
-    let scanTimer = null;
-    let isScanning = false;
-
-    const scanBtn = document.getElementById("scanBtn");
-    const portrait = document.getElementById("portrait");
-    const cameraFeed = document.getElementById("cameraFeed");
-    const cameraStatus = document.getElementById("cameraStatus");
-    const leadModal = document.getElementById("leadModal");
-
-    function setScan(data) {
-      document.getElementById("progressFill").style.width = `${data.progress}%`;
-      document.getElementById("progressText").textContent = `${data.progress}%`;
-      document.getElementById("scanCaption").textContent = data.caption;
-      document.getElementById("fineScore").textContent = `${data.fine}/100`;
-      document.getElementById("toneScore").textContent = `${data.tone}/100`;
-      document.getElementById("acneScore").textContent = `${data.acne}/100`;
-      document.getElementById("poreScore").textContent = `${data.pore}/100`;
-      document.getElementById("skinType").textContent = data.skinType;
-      document.getElementById("priority").textContent = data.priority;
-      document.getElementById("projectFit").textContent = data.fit;
-    }
-
-    function nextScan() {
-      scanIndex = (scanIndex + 1) % scans.length;
-      setScan(scans[scanIndex]);
-    }
-
-    function openLeadModal() {
-      leadModal.classList.add("open");
-      setTimeout(() => document.getElementById("leadPhone").focus(), 80);
-    }
-
-    function closeLeadModal() {
-      leadModal.classList.remove("open");
-    }
-
-    async function startCamera() {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        cameraStatus.textContent = "当前浏览器不支持摄像头";
-        return false;
-      }
-
-      try {
-        cameraStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user", width: { ideal: 720 }, height: { ideal: 960 } },
-          audio: false
-        });
-        cameraFeed.srcObject = cameraStream;
-        portrait.classList.add("camera-on");
-        cameraStatus.textContent = "前置镜头已开启";
-        return true;
-      } catch (error) {
-        cameraStatus.textContent = "未授权摄像头，已使用示意扫描";
-        return false;
-      }
-    }
-
-    function stopCamera() {
-      if (cameraStream) {
-        cameraStream.getTracks().forEach((track) => track.stop());
-        cameraStream = null;
-      }
-      cameraFeed.srcObject = null;
-      portrait.classList.remove("camera-on");
-    }
-
-    async function runScan() {
-      if (isScanning) return;
-      isScanning = true;
-      scanBtn.disabled = true;
-      portrait.classList.add("scanning");
-      document.getElementById("progressFill").style.width = "0%";
-      document.getElementById("progressText").textContent = "0%";
-      document.getElementById("scanCaption").textContent = "请正对前置镜头，保持10秒";
-      scanBtn.textContent = "正在启动前置镜头...";
-
-      await startCamera();
-
-      let remaining = 10;
-      scanBtn.textContent = `扫描中 ${remaining}s`;
-      cameraStatus.textContent = "扫描中，请保持面部在框内";
-
-      scanTimer = window.setInterval(() => {
-        remaining -= 1;
-        const progress = Math.min(100, Math.round(((10 - remaining) / 10) * 100));
-        document.getElementById("progressFill").style.width = `${progress}%`;
-        document.getElementById("progressText").textContent = `${progress}%`;
-        scanBtn.textContent = remaining > 0 ? `扫描中 ${remaining}s` : "生成报告中...";
-
-        if (remaining <= 0) {
-          window.clearInterval(scanTimer);
-          scanTimer = null;
-          stopCamera();
-          nextScan();
-          document.getElementById("progressFill").style.width = "100%";
-          document.getElementById("progressText").textContent = "100%";
-          document.getElementById("scanCaption").textContent = "纹、松、垮、垂检测完成";
-          cameraStatus.textContent = "扫描完成，可领取报告";
-          scanBtn.textContent = "重新扫描10秒";
-          scanBtn.disabled = false;
-          portrait.classList.remove("scanning");
-          isScanning = false;
-          document.getElementById("report").scrollIntoView({ block: "start" });
-        }
-      }, 1000);
-    }
-
-    scanBtn.addEventListener("click", runScan);
-    document.getElementById("rescanTop").addEventListener("click", runScan);
-    document.getElementById("reportBtn").addEventListener("click", openLeadModal);
-    document.getElementById("bottomReportBtn").addEventListener("click", openLeadModal);
-    document.getElementById("planBtn").addEventListener("click", openLeadModal);
-    document.getElementById("loginBtn").addEventListener("click", openLeadModal);
-    document.getElementById("quickLoginBtn").addEventListener("click", openLeadModal);
-    document.getElementById("quickSignupBtn").addEventListener("click", openLeadModal);
-    document.getElementById("advisorBtn").addEventListener("click", openLeadModal);
-    document.getElementById("closeLead").addEventListener("click", closeLeadModal);
-    leadModal.addEventListener("click", (event) => {
-      if (event.target === leadModal) closeLeadModal();
-    });
-    document.getElementById("leadForm").addEventListener("submit", (event) => {
-      event.preventDefault();
-      const phone = document.getElementById("leadPhone").value.trim();
-      if (!phone) return;
-      closeLeadModal();
-      document.getElementById("scanCaption").textContent = "报告已保存，顾问将跟进定制方案";
-      document.getElementById("report").scrollIntoView({ block: "start" });
-    });
-  </script>
-</body>
+    <script src="./app.js"></script>
+  </body>
 </html>
