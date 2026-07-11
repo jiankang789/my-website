@@ -1,408 +1,941 @@
 <!doctype html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="唐曾说AI，面向传统老板和实体商家，用AI智能体、数字人短视频、私域成交话术和行业项目包装，搭建能落地的AI获客增长系统。"
-    />
-    <title>唐曾说AI | 传统老板的AI增长教练</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>短视频工作台</title>
+    <link rel="icon" href="data:,">
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5f7f9;
+        --surface: #ffffff;
+        --surface-2: #eef3f4;
+        --ink: #17202a;
+        --muted: #65717d;
+        --line: #d8e0e4;
+        --brand: #0f766e;
+        --brand-dark: #0b5d57;
+        --accent: #b45309;
+        --blue: #2563eb;
+        --red: #dc2626;
+        --shadow: 0 12px 28px rgba(24, 36, 48, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+        letter-spacing: 0;
+      }
+
+      button, input, textarea, select { font: inherit; }
+
+      button {
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+      }
+
+      button:hover { border-color: var(--brand); }
+
+      .primary {
+        border-color: var(--brand);
+        background: var(--brand);
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .danger { color: var(--red); }
+
+      input, textarea, select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: #fff;
+        color: var(--ink);
+        padding: 9px 10px;
+      }
+
+      textarea { resize: vertical; min-height: 84px; }
+
+      label {
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 260px 1fr;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: #10232b;
+        color: #f8fbfb;
+        padding: 20px;
+      }
+
+      .brand {
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 6px;
+      }
+
+      .subtitle {
+        color: #a8c0c7;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 22px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav button {
+        width: 100%;
+        text-align: left;
+        background: transparent;
+        color: #dbeafe;
+        border-color: rgba(255,255,255,0.12);
+        padding: 10px 12px;
+      }
+
+      .nav button.active {
+        background: #e9f7f4;
+        color: #0f3d3a;
+        border-color: #e9f7f4;
+        font-weight: 800;
+      }
+
+      .side-metrics {
+        display: grid;
+        gap: 10px;
+        margin-top: 22px;
+      }
+
+      .side-metric {
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 12px;
+        background: rgba(255,255,255,0.05);
+      }
+
+      .side-metric b { display: block; font-size: 24px; }
+      .side-metric span { color: #a8c0c7; font-size: 12px; }
+
+      .main {
+        padding: 20px;
+        overflow: auto;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .topbar h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.05fr 1.35fr;
+        gap: 16px;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        padding: 16px;
+      }
+
+      .panel h2 {
+        margin: 0 0 12px;
+        font-size: 17px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .full { grid-column: 1 / -1; }
+
+      .pipeline {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(132px, 1fr));
+        gap: 10px;
+      }
+
+      .stage {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfdfd;
+        min-height: 228px;
+        padding: 10px;
+      }
+
+      .stage-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+
+      .task {
+        border: 1px solid #e1e8eb;
+        border-left: 4px solid var(--brand);
+        border-radius: 7px;
+        background: #fff;
+        padding: 9px;
+        margin-bottom: 8px;
+      }
+
+      .task b {
+        display: block;
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .task span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .task-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .task-actions button {
+        min-height: 28px;
+        padding: 0 8px;
+        font-size: 12px;
+      }
+
+      .tabs {
+        display: flex;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+        width: fit-content;
+        margin-bottom: 12px;
+      }
+
+      .tabs button {
+        border: 0;
+        border-radius: 0;
+        padding: 8px 12px;
+      }
+
+      .tabs button.active {
+        background: var(--brand);
+        color: white;
+        font-weight: 800;
+      }
+
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 820px;
+        background: white;
+      }
+
+      th, td {
+        border-bottom: 1px solid var(--line);
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 13px;
+      }
+
+      th {
+        background: var(--surface-2);
+        color: #34414a;
+        font-size: 12px;
+      }
+
+      .status {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #e8f5f3;
+        color: var(--brand-dark);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .script-box {
+        white-space: pre-wrap;
+        line-height: 1.65;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfdfd;
+        padding: 12px;
+        min-height: 240px;
+      }
+
+      .module-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .module-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fbfdfd;
+        padding: 12px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .module-card h3 {
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .module-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .module-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .module-meta span {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #fff;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .checklist {
+        display: grid;
+        gap: 10px;
+      }
+
+      .check-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .check-row input { width: auto; margin-top: 3px; }
+      .check-row small { color: var(--muted); display: block; margin-top: 3px; }
+
+      .hidden { display: none !important; }
+
+      @media (max-width: 1180px) {
+        .shell { grid-template-columns: 1fr; }
+        .sidebar { position: sticky; top: 0; z-index: 2; }
+        .grid { grid-template-columns: 1fr; }
+        .pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+
+      @media (max-width: 680px) {
+        .main, .sidebar { padding: 14px; }
+        .topbar { align-items: flex-start; flex-direction: column; }
+        .form-grid { grid-template-columns: 1fr; }
+        .pipeline { grid-template-columns: 1fr; }
+        .module-list { grid-template-columns: 1fr; }
+      }
+    </style>
   </head>
   <body>
-    <header class="site-header" aria-label="官网导航">
-      <a class="brand" href="#top" aria-label="唐曾说AI 首页">
-        <span class="brand-mark">C</span>
-        <span class="brand-text">
-          <strong>唐曾说AI</strong>
-          <small>Cotex智能体铁军</small>
-        </span>
-      </a>
-
-      <nav class="desktop-nav" aria-label="主要导航">
-        <a href="#about">个人定位</a>
-        <a href="#capability">核心能力</a>
-        <a href="#solutions">行业方案</a>
-        <a href="#cases">落地案例</a>
-        <a href="#content-studio">拍摄文案</a>
-        <a href="#process">合作流程</a>
-      </nav>
-
-      <button class="menu-button" type="button" id="menuButton" aria-expanded="false" aria-controls="mobileNav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-      <a class="header-action" href="#contact">领取方案</a>
-    </header>
-
-    <nav class="mobile-nav" id="mobileNav" aria-label="移动导航" hidden>
-      <a href="#about">个人定位</a>
-      <a href="#capability">核心能力</a>
-      <a href="#solutions">行业方案</a>
-      <a href="#cases">落地案例</a>
-      <a href="#content-studio">拍摄文案</a>
-      <a href="#process">合作流程</a>
-      <a href="#contact">咨询方案</a>
-    </nav>
-
-    <main id="top">
-      <section class="hero">
-        <img class="hero-bg" src="./assets/hero-ai-command-tangzeng.png" alt="唐曾说AI实体商家AI增长作战中台" />
-        <div class="hero-overlay"></div>
-        <div class="hero-inner">
-          <div class="hero-copy">
-            <p class="eyebrow">AI智能体铁军 / 实体商家增长系统</p>
-            <h1>唐曾说AI</h1>
-            <p class="hero-belief">AI不是玩具，是老板的第二增长团队。</p>
-            <p class="hero-claim">
-              我帮传统老板把经验、项目、短视频、数字人、私域话术和成交流程，组装成一套能跑起来的AI获客系统。
-            </p>
-            <div class="hero-actions">
-              <a class="button primary" href="#contact">获取企业官网方案</a>
-              <a class="button secondary" href="#capability">查看能力矩阵</a>
-            </div>
-          </div>
-          <aside class="hero-proof" aria-label="业务沉淀数据">
-            <div>
-              <strong>13</strong>
-              <span>数字分身岗位</span>
-            </div>
-            <div>
-              <strong>4</strong>
-              <span>获客工厂模块</span>
-            </div>
-            <div>
-              <strong>30天</strong>
-              <span>最小闭环落地</span>
-            </div>
-          </aside>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">短视频工作台</div>
+        <div class="subtitle">人设、选题、脚本、素材、数字人、发布记录，一条线管理。</div>
+        <nav class="nav">
+          <button class="active" data-view="dashboard">生产看板</button>
+          <button data-view="script">脚本工作区</button>
+          <button data-view="avatar">数字人素材</button>
+          <button data-view="publish">发布追踪</button>
+          <button data-view="modules">开源模块</button>
+        </nav>
+        <div class="side-metrics">
+          <div class="side-metric"><b id="metricTotal">0</b><span>总选题</span></div>
+          <div class="side-metric"><b id="metricToday">0</b><span>今日待推进</span></div>
+          <div class="side-metric"><b id="metricReady">0</b><span>可发布成片</span></div>
         </div>
-      </section>
+      </aside>
 
-      <section class="signal-strip" aria-label="品牌定位">
-        <div>
-              <strong>我们服务谁</strong>
-          <span>传统老板、实体门店、美业项目方、AI转型学习者</span>
-        </div>
-        <div>
-          <strong>我们解决什么</strong>
-          <span>不会用AI、不会拍内容、不会承接私域、不会标准化成交</span>
-        </div>
-        <div>
-          <strong>我们交付什么</strong>
-          <span>AI智能体工作流、短视频脚本、数字人素材、行业落地方案</span>
-        </div>
-      </section>
-
-      <section class="section intro-band" id="about">
-        <div class="intro-grid">
+      <main class="main">
+        <div class="topbar">
           <div>
-            <p class="eyebrow">半年沉淀，不是散点工具</p>
-            <h2>你的内容核心，是把AI讲成老板听得懂、用得上的生意工具。</h2>
+            <h1>美业招商短视频生产线</h1>
           </div>
-          <p>
-            从 Cotex 智能体铁军、短视频获客生成器，到美业轻抗衰资料包、榛栗塑项目招商包装、自然阳光舌象营养观察资料，你这半年一直在做同一件事：把AI从概念变成实体商家能看见、能复制、能成交的工作流。官网要做的事，就是把这套能力讲清楚、讲可信、讲成可咨询、可合作、可持续输出内容的个人品牌阵地。
-          </p>
+          <div class="actions">
+            <button id="seedBtn">填入示例</button>
+            <button id="exportJsonBtn">导出 JSON</button>
+            <button id="exportCsvBtn">导出 CSV</button>
+            <button class="danger" id="clearBtn">清空本地数据</button>
+          </div>
         </div>
 
-        <div class="identity-panel">
-          <img src="./assets/tangzeng-portrait.jpg" alt="唐曾说AI个人形象" />
-          <div>
-            <p class="eyebrow">个人品牌定位</p>
-            <h3>传统老板的AI增长教练</h3>
-            <p>
-              你不是单纯教软件操作，而是帮老板回答三个问题：我的生意怎么用AI获客，我的内容怎么持续拍，我的客户怎么从咨询走到成交。
-            </p>
-            <div class="identity-tags">
-              <span>AI智能体</span>
-              <span>实体获客</span>
-              <span>数字人短视频</span>
-              <span>私域成交</span>
-              <span>项目招商包装</span>
+        <section id="view-dashboard" class="view">
+          <div class="grid">
+            <div class="panel">
+              <h2>新增选题</h2>
+              <div class="form-grid">
+                <label>选题标题<input id="topicTitle" value="美业老板为什么越做越累"></label>
+                <label>目标客户<input id="topicAudience" value="美容院老板 / 美业创业者"></label>
+                <label>视频类型
+                  <select id="topicType">
+                    <option>痛点教育</option>
+                    <option>招商转化</option>
+                    <option>案例拆解</option>
+                    <option>认知干货</option>
+                    <option>直播预热</option>
+                  </select>
+                </label>
+                <label>导流口令<input id="topicCta" value="招商"></label>
+                <label class="full">核心卖点<textarea id="topicOffer">把短视频、私域、成交话术和招商模型打通，帮门店建立稳定获客系统。</textarea></label>
+                <label class="full">痛点<textarea id="topicPain">门店每天发内容，但没有咨询；活动越做越低价，利润越来越薄。</textarea></label>
+              </div>
+              <div class="actions" style="margin-top:12px">
+                <button class="primary" id="addTopicBtn">加入生产线</button>
+                <button id="generateScriptBtn">生成脚本</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h2>流程看板</h2>
+              <div class="pipeline" id="pipeline"></div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section" id="capability">
-        <div class="section-heading">
-          <p class="eyebrow">核心能力</p>
-          <h2>让一个老板，也能调度一支AI增长团队。</h2>
-          <p>围绕实体商家的获客、承接、成交和复购，搭建可复制的智能体流程。</p>
-        </div>
-
-        <div class="capability-grid">
-          <article class="capability-card">
-            <span>01</span>
-            <h3>AI智能体获客系统</h3>
-            <p>生成同城短视频脚本、朋友圈文案、社群活动、顾客邀约、异议处理和复购提醒，降低内容运营成本。</p>
-          </article>
-          <article class="capability-card">
-            <span>02</span>
-            <h3>短视频与数字人工厂</h3>
-            <p>把产品、客户、痛点和卖点拆成口播脚本、封面标题、置顶评论、分镜字幕和9:16竖屏视频任务。</p>
-          </article>
-          <article class="capability-card">
-            <span>03</span>
-            <h3>私域成交话术库</h3>
-            <p>按“先共情、再确认需求、再给建议、最后轻邀约”的顾问式成交逻辑，沉淀咨询转化SOP。</p>
-          </article>
-          <article class="capability-card">
-            <span>04</span>
-            <h3>行业项目包装</h3>
-            <p>把项目定位、价格梯度、招商话术、门店交付流程、合规禁用词和朋友圈素材打包成可招商方案。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section dark-band">
-        <div class="section-heading compact">
-          <p class="eyebrow">Cotex智能体铁军</p>
-          <h2>13个岗位，接走老板每天重复消耗的工作。</h2>
-        </div>
-        <div class="army-grid" id="armyGrid" aria-label="13个数字分身岗位">
-          <button type="button" data-role="规划铁军">规划</button>
-          <button type="button" data-role="开发铁军">开发</button>
-          <button type="button" data-role="产品铁军">产品</button>
-          <button type="button" data-role="流量铁军">流量</button>
-          <button type="button" data-role="私域铁军">私域</button>
-          <button type="button" data-role="成交铁军">成交</button>
-          <button type="button" data-role="交付铁军">交付</button>
-          <button type="button" data-role="赋能铁军">赋能</button>
-          <button type="button" data-role="资产铁军">资产</button>
-          <button type="button" data-role="数据铁军">数据</button>
-          <button type="button" data-role="品牌铁军">品牌</button>
-          <button type="button" data-role="增长铁军">增长</button>
-          <button type="button" data-role="裂变铁军">裂变</button>
-        </div>
-        <article class="role-panel" id="rolePanel">
-          <p class="role-kicker">当前岗位</p>
-          <h3>流量铁军</h3>
-          <p>负责把老板经验和产品卖点拆成短视频选题、口播脚本、直播预热、朋友圈内容和同城引流动作。</p>
-        </article>
-      </section>
-
-      <section class="section" id="solutions">
-        <div class="section-heading">
-          <p class="eyebrow">行业方案</p>
-          <h2>先从高需求行业切入，再复制到更多实体场景。</h2>
-        </div>
-
-        <div class="solution-grid">
-          <article>
-            <h3>美业轻抗衰门店</h3>
-            <p>围绕安全表达、内容获客、私域承接和咨询转化，输出30条选题、10条AI提示词、20句转化话术。</p>
-            <ul>
-              <li>门店老板IP定位</li>
-              <li>短视频与朋友圈内容</li>
-              <li>顾问式成交SOP</li>
-            </ul>
-          </article>
-          <article>
-            <h3>项目招商与渠道合作</h3>
-            <p>把产品、仪器、培训、物料、运营和AI获客支持，包装成单店、区县、市级合作模式。</p>
-            <ul>
-              <li>招商主张与价格梯度</li>
-              <li>门店标准交付流程</li>
-              <li>合规话术与禁用词</li>
-            </ul>
-          </article>
-          <article>
-            <h3>本地生活实体商家</h3>
-            <p>用公众号内容、短视频、数字人分享和线索沉淀，帮助商家低成本启动视频号和直播获客链路。</p>
-            <ul>
-              <li>同城内容生产</li>
-              <li>私域线索中心</li>
-              <li>复购与老客激活</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="section case-band" id="cases">
-        <div class="case-layout">
-          <div class="case-copy">
-            <p class="eyebrow">落地案例</p>
-            <h2>榛栗塑·原生精雕项目包装</h2>
-            <p>
-              面向美容院、皮肤管理中心和养生美肤门店，将“AI智能体低成本获客系统 + 面部29点位抗衰管理 + 56项无创微米透导技术 + 鲜活细胞灵感焕颜护理”组合成可招商、可成交、可复购的门店增长方案。
-            </p>
-            <div class="case-points">
-              <span>合规生活美容表达</span>
-              <span>三档合作模式</span>
-              <span>门店标准交付SOP</span>
-              <span>短视频口播与朋友圈素材</span>
+        <section id="view-script" class="view hidden">
+          <div class="grid">
+            <div class="panel">
+              <h2>脚本模板</h2>
+              <div class="tabs">
+                <button class="active" data-template="direct">招商成交</button>
+                <button data-template="teacher">讲师干货</button>
+                <button data-template="case">案例反转</button>
+              </div>
+              <label>当前选题
+                <select id="topicSelect"></select>
+              </label>
+              <div class="actions" style="margin-top:12px">
+                <button class="primary" id="rewriteSelectedBtn">按模板重写</button>
+                <button id="copyScriptBtn">复制脚本</button>
+                <button id="createLiketongPackageBtn">生成立客通素材包</button>
+              </div>
+              <div class="script-box" id="liketongPackageResult" style="min-height:96px;margin-top:12px;color:var(--muted)">素材包生成后，文件夹路径会显示在这里。</div>
+            </div>
+            <div class="panel">
+              <h2>口播脚本</h2>
+              <div class="script-box" id="scriptPreview"></div>
             </div>
           </div>
-          <div class="case-showcase" aria-label="榛栗塑项目海报展示">
-            <button class="case-arrow" type="button" id="prevCase" aria-label="上一张案例图">‹</button>
-            <img id="caseImage" src="./assets/case-zhenlisu-growth-1.png" alt="榛栗塑招商海报：缺客户获客版" />
-            <button class="case-arrow" type="button" id="nextCase" aria-label="下一张案例图">›</button>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section class="section proof-section">
-        <div class="section-heading compact">
-          <p class="eyebrow">已经沉淀的项目资产</p>
-          <h2>官网不是从零开始，而是在整理可销售的业务资产。</h2>
-        </div>
-
-        <div class="asset-grid">
-          <article>
-            <img src="./assets/agent-army-hero.png" alt="Cotex智能体铁军主视觉" />
-            <h3>Cotex智能体铁军</h3>
-            <p>创始人大脑、公众号工厂、短视频工厂、数字人工厂和线索中心。</p>
-          </article>
-          <article>
-            <img src="./assets/tangzeng-portrait.jpg" alt="唐曾说AI人物形象" />
-            <h3>老板IP与数字人分身</h3>
-            <p>用真人形象、声音样本和口播脚本，沉淀可持续分发的内容资产。</p>
-          </article>
-          <article>
-            <img src="./assets/case-zhenlisu-growth-2.png" alt="榛栗塑三核竞争力招商海报" />
-            <h3>行业招商物料</h3>
-            <p>把产品卖点、门店扶持、合作模式和合规提示做成招商资料。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section process-band" id="process">
-        <div class="section-heading">
-          <p class="eyebrow">合作流程</p>
-          <h2>从诊断到上线，先跑一个最小增长闭环。</h2>
-        </div>
-        <div class="process-list">
-          <article>
-            <span>01</span>
-            <h3>业务诊断</h3>
-            <p>确认行业、客群、产品结构、获客渠道、成交卡点和合规边界。</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>系统搭建</h3>
-            <p>配置智能体分工、内容模板、私域话术、线索表和复盘看板。</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>内容放量</h3>
-            <p>批量生成选题、脚本、数字人口播、朋友圈文案和直播预热。</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>成交复盘</h3>
-            <p>围绕咨询率、加微率、成交率、复购率，调整话术与产品路径。</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section content-studio" id="content-studio">
-        <div class="section-heading compact">
-          <p class="eyebrow">拍摄文案入口</p>
-          <h2>把你的内容方向，变成今天能拍的一条短视频。</h2>
-          <p>这是官网里的第一版轻量脚本生成器，后续可以继续接入你的资料库、案例库和声音/数字人流程。</p>
-        </div>
-
-        <div class="script-layout">
-          <form class="script-form" id="scriptForm">
-            <label>
-              今天想拍的主题
-              <input id="scriptTopic" type="text" value="传统老板为什么必须学会用AI智能体获客" />
-            </label>
-            <label>
-              目标观众
-              <select id="scriptAudience">
-                <option value="传统实体老板">传统实体老板</option>
-                <option value="美业门店老板">美业门店老板</option>
-                <option value="想做AI副业的人">想做AI副业的人</option>
-                <option value="项目招商负责人">项目招商负责人</option>
-              </select>
-            </label>
-            <label>
-              转化动作
-              <select id="scriptCta">
-                <option value="评论区打AI，领取AI获客诊断表">评论区打AI，领取AI获客诊断表</option>
-                <option value="私信我两个字：智能体">私信我两个字：智能体</option>
-                <option value="留言你的行业，我帮你拆一套AI流程">留言你的行业，我帮你拆一套AI流程</option>
-              </select>
-            </label>
-            <button class="button primary wide" type="submit">生成拍摄脚本</button>
-          </form>
-
-          <article class="script-card" id="scriptCard" aria-live="polite">
-            <p class="role-kicker">30秒口播脚本</p>
-            <h3 id="scriptTitle">传统老板不是缺努力，而是缺一套AI工作流</h3>
-            <div class="script-block" id="scriptOutput">
-              <p>很多传统老板现在最累的，不是产品不好，而是每天都在重复做内容、跟客户、催成交。</p>
-              <p>AI智能体真正的价值，不是替你玩软件，而是帮你把选题、脚本、私域话术和复盘流程固定下来。</p>
-              <p>你先不用追求复杂系统，先做一件事：把你每天最重复的3个动作交给AI，让它变成你的增长员工。</p>
-              <p>想要AI获客诊断表，在评论区打AI。</p>
+        <section id="view-avatar" class="view hidden">
+          <div class="grid">
+            <div class="panel">
+              <h2>数字人人设</h2>
+              <div class="form-grid">
+                <label>身份<input id="personaRole" value="54岁美业招商讲师"></label>
+                <label>气质<input id="personaTone" value="亲和、优雅、专业、可信"></label>
+                <label>穿搭<input id="personaOutfit" value="职业装 / 白衬衫 / 深色西装"></label>
+                <label>用途<input id="personaUse" value="招商、课程转化、加盟咨询"></label>
+                <label class="full">表达原则<textarea id="personaRule">像老师讲清楚，不像销售硬推；用真实视频保相似度，口型同步工具负责新文案。</textarea></label>
+              </div>
             </div>
-            <button class="button secondary wide" type="button" id="copyScript">复制拍摄脚本</button>
-          </article>
-        </div>
-      </section>
-
-      <section class="section contact-section" id="contact">
-        <div class="contact-layout">
-          <div>
-            <p class="eyebrow">咨询方案</p>
-            <h2>先生成一张你的AI增长诊断卡。</h2>
-            <p>
-              填写业务类型和当前卡点，页面会在本地生成一份初步沟通卡，适合发给团队或作为官网咨询入口的第一版文案。
-            </p>
+            <div class="panel">
+              <h2>素材检查</h2>
+              <div class="checklist">
+                <label class="check-row"><input type="checkbox" class="assetCheck"><span>真人底片<small>竖屏、正脸、无字幕、无滤镜、背景干净。</small></span></label>
+                <label class="check-row"><input type="checkbox" class="assetCheck"><span>男声配音<small>成熟、稳重、亲和，不要播音腔太重。</small></span></label>
+                <label class="check-row"><input type="checkbox" class="assetCheck"><span>口型同步工具<small>立客通、剪映数字人、即梦、HeyGen、D-ID 或本地方案。</small></span></label>
+                <label class="check-row"><input type="checkbox" class="assetCheck"><span>招商包装模板<small>标题、身份条、重点字幕、导流口令。</small></span></label>
+                <label class="check-row"><input type="checkbox" class="assetCheck"><span>发布素材<small>封面标题、评论区话术、私信回复。</small></span></label>
+              </div>
+            </div>
+            <div class="panel full">
+              <h2>立客通接入</h2>
+              <div class="form-grid">
+                <label>客户端路径
+                  <input value="D:\ai-tools\liketong-ai-employee\app\立客通AI员工.exe" readonly>
+                </label>
+                <label>交接目录
+                  <input value="digital-human-mvp/liketong-inbox" readonly>
+                </label>
+                <label class="full">接入方式
+                  <textarea readonly>第一版采用文件夹交接：工作台生成脚本和素材清单，立客通负责真人口型同步，导出的 MP4 放回 liketong-output，再由工作台做招商包装和发布追踪。</textarea>
+                </label>
+              </div>
+              <div class="actions" style="margin-top:12px">
+                <button id="copyLiketongPathBtn" type="button">复制客户端路径</button>
+                <button id="copyLiketongStepsBtn" type="button">复制操作步骤</button>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <form class="lead-form" id="leadForm">
-            <label>
-              业务类型
-              <input id="businessType" type="text" placeholder="如：美容院、皮肤管理、服装门店、知识服务" required />
-            </label>
-            <label>
-              当前卡点
-              <select id="painPoint">
-                <option value="缺内容">缺内容，不知道每天发什么</option>
-                <option value="缺线索">缺线索，视频有播放但没人咨询</option>
-                <option value="成交弱">成交弱，加了微信但转化低</option>
-                <option value="交付乱">交付乱，靠老板亲自盯</option>
-                <option value="表达怕违规">表达怕违规，不敢讲卖点</option>
-              </select>
-            </label>
-            <label>
-              主要产品/服务
-              <input id="mainOffer" type="text" placeholder="如：轻抗衰护理、项目招商、AI课程、女装穿搭" />
-            </label>
-            <button class="button primary wide" type="submit">生成诊断卡</button>
-          </form>
+        <section id="view-publish" class="view hidden">
+          <div class="panel">
+            <h2>发布追踪表</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>编号</th>
+                    <th>选题</th>
+                    <th>类型</th>
+                    <th>阶段</th>
+                    <th>导流口令</th>
+                    <th>平台标题</th>
+                    <th>发布时间</th>
+                    <th>数据反馈</th>
+                  </tr>
+                </thead>
+                <tbody id="publishRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
 
-          <article class="diagnosis-card" id="diagnosisCard" aria-live="polite">
-            <p class="role-kicker">AI增长诊断卡</p>
-            <h3>唐曾说AI会先帮你梳理获客闭环</h3>
-            <p id="diagnosisText">
-              这里会根据你的业务类型，生成优先启动的智能体岗位、7天动作和官网咨询话术。
-            </p>
-            <ul id="diagnosisList">
-              <li>优先梳理客群、产品和合规表达。</li>
-              <li>再启动内容生成、私域承接和成交话术。</li>
-              <li>最后用数据复盘沉淀可复制SOP。</li>
-            </ul>
-            <button class="button secondary wide" type="button" id="copyDiagnosis">复制诊断卡</button>
+        <section id="view-modules" class="view hidden">
+          <div class="panel">
+            <h2>开源模块整合方案</h2>
+            <p style="margin-top:0;color:var(--muted);line-height:1.7">先用工作台做总控台，再把下载、转写、仿写、声音、数字人、包装和发布做成可替换模块。</p>
+            <div class="module-list" id="moduleList"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const stages = ["选题", "脚本", "素材", "数字人", "包装", "发布"];
+      const storeKey = "beauty_short_video_workbench_v1";
+      let activeTemplate = "direct";
+      let state = loadState();
+      let pipelineModulesLoaded = false;
+
+      function $(id) { return document.getElementById(id); }
+
+      function renderPipelineModules(data) {
+        const root = $("moduleList");
+        if (!root) return;
+        const modules = data.modules || [];
+        if (!modules.length) {
+          root.innerHTML = '<div class="module-card"><h3>暂无模块配置</h3><p>请检查 config/pipeline_modules.json。</p></div>';
+          return;
+        }
+        root.innerHTML = modules.map((item) => `
+          <article class="module-card">
+            <h3>${item.name || item.id}</h3>
+            <div class="module-meta">
+              <span>${item.status || "planned"}</span>
+              <span>${item.primary || ""}</span>
+            </div>
+            <p><b>输入：</b>${(item.input || []).join("、")}</p>
+            <p><b>输出：</b>${(item.output || []).join("、")}</p>
+            <p>${item.mvp || ""}</p>
           </article>
-        </div>
-      </section>
-    </main>
+        `).join("");
+      }
 
-    <footer class="site-footer">
-      <div>
-        <strong>唐曾说AI.Cotex智能体铁军</strong>
-        <span>实体商家AI获客增长系统</span>
-      </div>
-      <p>宣传内容仅用于业务介绍，具体合作内容以双方确认的项目方案为准。</p>
-    </footer>
+      async function loadPipelineModules() {
+        if (pipelineModulesLoaded) return;
+        pipelineModulesLoaded = true;
+        const root = $("moduleList");
+        if (root) root.innerHTML = '<div class="module-card"><h3>正在读取模块配置</h3><p>请稍候。</p></div>';
+        try {
+          const response = await fetch("api/pipeline-modules.json");
+          const data = await response.json();
+          renderPipelineModules(data);
+        } catch (error) {
+          if (root) root.innerHTML = `<div class="module-card"><h3>读取失败</h3><p>${error.message}</p></div>`;
+        }
+      }
 
-    <script src="./app.js"></script>
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(storeKey)) || { topics: [], checks: [] };
+        } catch {
+          return { topics: [], checks: [] };
+        }
+      }
+
+      function saveState() {
+        localStorage.setItem(storeKey, JSON.stringify(state));
+        render();
+      }
+
+      function currentInput() {
+        return {
+          title: $("topicTitle").value.trim(),
+          audience: $("topicAudience").value.trim(),
+          type: $("topicType").value,
+          cta: $("topicCta").value.trim(),
+          offer: $("topicOffer").value.trim(),
+          pain: $("topicPain").value.trim()
+        };
+      }
+
+      function buildScript(topic, template = activeTemplate) {
+        const base = {
+          hook: `${topic.audience}注意了，${topic.title}，真正的问题往往不在技术。`,
+          pain: `很多门店卡住，是因为${topic.pain}`,
+          offer: `我们要做的，是把${topic.offer}`,
+          cta: `想要这套模型，私信我「${topic.cta}」。`
+        };
+
+        if (template === "teacher") {
+          return `今天讲一个美业门店最容易忽略的问题。\n\n${base.hook}\n\n${base.pain}\n\n不要只盯着流量，要先把选题、信任、私域承接和成交话术连起来。\n\n${base.offer}\n\n${base.cta}`;
+        }
+
+        if (template === "case") {
+          return `有个美业老板跟我说：老师，我每天都发视频，为什么还是没人咨询？\n\n我看完以后发现，不是她不努力，而是内容没有承接到成交。\n\n${base.pain}\n\n后来我们换了一套打法：先用痛点选题吸引精准客户，再用私域话术完成预约和招商转化。\n\n${base.offer}\n\n${base.cta}`;
+        }
+
+        return `${base.hook}\n\n${base.pain}\n\n以前靠活动、靠熟人、靠低价，现在越来越难。\n\n真正能长期赚钱的门店，一定要有一套稳定获客系统。\n\n${base.offer}\n\n${base.cta}`;
+      }
+
+      function addTopic() {
+        const input = currentInput();
+        if (!input.title) return;
+        const item = {
+          id: Date.now().toString(36),
+          ...input,
+          stage: "选题",
+          script: buildScript(input),
+          publishTitle: input.title,
+          publishAt: "",
+          feedback: "",
+          createdAt: new Date().toISOString()
+        };
+        state.topics.unshift(item);
+        saveState();
+      }
+
+      function moveTopic(id, direction) {
+        const item = state.topics.find((topic) => topic.id === id);
+        if (!item) return;
+        const index = stages.indexOf(item.stage);
+        item.stage = stages[Math.max(0, Math.min(stages.length - 1, index + direction))];
+        saveState();
+      }
+
+      function deleteTopic(id) {
+        state.topics = state.topics.filter((topic) => topic.id !== id);
+        saveState();
+      }
+
+      function renderPipeline() {
+        const root = $("pipeline");
+        root.innerHTML = "";
+        stages.forEach((stage) => {
+          const column = document.createElement("div");
+          column.className = "stage";
+          const items = state.topics.filter((topic) => topic.stage === stage);
+          column.innerHTML = `<div class="stage-head"><span>${stage}</span><span>${items.length}</span></div>`;
+          items.forEach((topic) => {
+            const task = document.createElement("div");
+            task.className = "task";
+            task.innerHTML = `
+              <b>${topic.title}</b>
+              <span>${topic.type} · 口令：${topic.cta}</span>
+              <div class="task-actions">
+                <button data-move="${topic.id}" data-dir="-1">←</button>
+                <button data-move="${topic.id}" data-dir="1">→</button>
+                <button class="danger" data-delete="${topic.id}">删</button>
+              </div>
+            `;
+            column.appendChild(task);
+          });
+          root.appendChild(column);
+        });
+      }
+
+      function renderSelect() {
+        const select = $("topicSelect");
+        select.innerHTML = "";
+        state.topics.forEach((topic) => {
+          const option = document.createElement("option");
+          option.value = topic.id;
+          option.textContent = topic.title;
+          select.appendChild(option);
+        });
+        renderScriptPreview();
+      }
+
+      function selectedTopic() {
+        const id = $("topicSelect").value;
+        return state.topics.find((topic) => topic.id === id) || state.topics[0];
+      }
+
+      function renderScriptPreview() {
+        const topic = selectedTopic();
+        $("scriptPreview").textContent = topic ? topic.script : "先在生产看板里新增一个选题。";
+      }
+
+      function renderPublishRows() {
+        $("publishRows").innerHTML = state.topics.map((topic, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${topic.title}</td>
+            <td>${topic.type}</td>
+            <td><span class="status">${topic.stage}</span></td>
+            <td>${topic.cta}</td>
+            <td>${topic.publishTitle || topic.title}</td>
+            <td>${topic.publishAt || "待定"}</td>
+            <td>${topic.feedback || "待记录"}</td>
+          </tr>
+        `).join("");
+      }
+
+      function renderMetrics() {
+        $("metricTotal").textContent = state.topics.length;
+        $("metricToday").textContent = state.topics.filter((topic) => topic.stage !== "发布").length;
+        $("metricReady").textContent = state.topics.filter((topic) => topic.stage === "包装").length;
+      }
+
+      function renderChecks() {
+        document.querySelectorAll(".assetCheck").forEach((box, index) => {
+          box.checked = Boolean(state.checks[index]);
+        });
+      }
+
+      function render() {
+        renderPipeline();
+        renderSelect();
+        renderPublishRows();
+        renderMetrics();
+        renderChecks();
+      }
+
+      function seedDemo() {
+        if (state.topics.length) return;
+        state.topics = [
+          {
+            id: "demo1",
+            title: "美业老板不是缺技术，是缺稳定获客系统",
+            audience: "美容院老板",
+            type: "招商转化",
+            cta: "招商",
+            offer: "短视频、私域、成交话术和招商模型打通",
+            pain: "活动越做越低价，客户越来越难留住",
+            stage: "脚本",
+            publishTitle: "美业老板，不缺技术，缺的是获客系统",
+            publishAt: "",
+            feedback: "",
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "demo2",
+            title: "为什么你的门店发视频没有咨询",
+            audience: "美业创业者",
+            type: "痛点教育",
+            cta: "模型",
+            offer: "用痛点选题吸引精准客户，再用私域完成转化",
+            pain: "内容看起来热闹，但没有导向私信和预约",
+            stage: "选题",
+            publishTitle: "每天发视频，为什么还是没人咨询？",
+            publishAt: "",
+            feedback: "",
+            createdAt: new Date().toISOString()
+          }
+        ];
+        state.topics.forEach((topic) => topic.script = buildScript(topic));
+        saveState();
+      }
+
+      function download(name, text, type) {
+        const blob = new Blob([text], { type });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = name;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function exportCsv() {
+        const header = ["编号","选题","目标客户","类型","阶段","导流口令","平台标题","发布时间","反馈"];
+        const rows = state.topics.map((topic, index) => [
+          index + 1, topic.title, topic.audience, topic.type, topic.stage, topic.cta,
+          topic.publishTitle || topic.title, topic.publishAt || "", topic.feedback || ""
+        ]);
+        const csv = [header, ...rows].map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+        download("短视频工作台.csv", "\ufeff" + csv, "text/csv;charset=utf-8");
+      }
+
+      document.querySelectorAll(".nav button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".nav button").forEach((item) => item.classList.remove("active"));
+          document.querySelectorAll(".view").forEach((view) => view.classList.add("hidden"));
+          button.classList.add("active");
+          $(`view-${button.dataset.view}`).classList.remove("hidden");
+          if (button.dataset.view === "modules") loadPipelineModules();
+        });
+      });
+
+      document.querySelectorAll(".tabs button").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".tabs button").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+          activeTemplate = button.dataset.template;
+          renderScriptPreview();
+        });
+      });
+
+      $("pipeline").addEventListener("click", (event) => {
+        const moveId = event.target.dataset.move;
+        const deleteId = event.target.dataset.delete;
+        if (moveId) moveTopic(moveId, Number(event.target.dataset.dir));
+        if (deleteId) deleteTopic(deleteId);
+      });
+
+      $("addTopicBtn").addEventListener("click", addTopic);
+      $("generateScriptBtn").addEventListener("click", () => {
+        const input = currentInput();
+        $("scriptPreview").textContent = buildScript(input);
+        document.querySelector('[data-view="script"]').click();
+      });
+
+      $("rewriteSelectedBtn").addEventListener("click", () => {
+        const topic = selectedTopic();
+        if (!topic) return;
+        topic.script = buildScript(topic, activeTemplate);
+        topic.stage = "脚本";
+        saveState();
+      });
+
+      $("topicSelect").addEventListener("change", renderScriptPreview);
+      $("copyScriptBtn").addEventListener("click", async () => {
+        await navigator.clipboard.writeText($("scriptPreview").textContent);
+      });
+
+      $("createLiketongPackageBtn").addEventListener("click", async () => {
+        const topic = selectedTopic();
+        if (!topic) {
+          $("liketongPackageResult").textContent = "请先新增一个选题。";
+          return;
+        }
+        const payload = {
+          topic: { ...topic, script: $("scriptPreview").textContent },
+          personaRole: $("personaRole")?.value,
+          personaTone: $("personaTone")?.value,
+          personaOutfit: $("personaOutfit")?.value,
+          personaUse: $("personaUse")?.value
+        };
+        $("liketongPackageResult").textContent = "正在生成素材包...";
+        try {
+          const response = await fetch("/api/liketong-package", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || "生成失败");
+          topic.stage = "素材";
+          topic.liketongPackage = result;
+          saveState();
+          $("liketongPackageResult").textContent = [
+            "已生成立客通素材包：",
+            result.folderPath,
+            "",
+            "包含文件：",
+            result.files.join("、"),
+            "",
+            "立客通导出目录：",
+            result.outputDir
+          ].join("\n");
+        } catch (error) {
+          $("liketongPackageResult").textContent = `生成失败：${error.message}`;
+        }
+      });
+
+      $("copyLiketongPathBtn").addEventListener("click", async () => {
+        await navigator.clipboard.writeText("D:\\ai-tools\\liketong-ai-employee\\app\\立客通AI员工.exe");
+      });
+
+      $("copyLiketongStepsBtn").addEventListener("click", async () => {
+        await navigator.clipboard.writeText([
+          "1. 在工作台生成口播脚本",
+          "2. 把脚本、真人底片、配音文件放入 digital-human-mvp/liketong-inbox",
+          "3. 打开立客通 AI 员工",
+          "4. 导入真人底片，粘贴脚本或导入配音",
+          "5. 生成口型同步视频",
+          "6. 导出 MP4 到 digital-human-mvp/liketong-output",
+          "7. 回到工作台推进到包装和发布"
+        ].join("\\n"));
+      });
+
+      document.querySelectorAll(".assetCheck").forEach((box, index) => {
+        box.addEventListener("change", () => {
+          state.checks[index] = box.checked;
+          saveState();
+        });
+      });
+
+      $("seedBtn").addEventListener("click", seedDemo);
+      $("exportJsonBtn").addEventListener("click", () => download("短视频工作台.json", JSON.stringify(state, null, 2), "application/json;charset=utf-8"));
+      $("exportCsvBtn").addEventListener("click", exportCsv);
+      $("clearBtn").addEventListener("click", () => {
+        if (!confirm("确认清空本地工作台数据？")) return;
+        state = { topics: [], checks: [] };
+        saveState();
+      });
+
+      render();
+    </script>
   </body>
 </html>

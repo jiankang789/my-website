@@ -1,0 +1,88 @@
+{
+  "updatedAt": "2026-07-11",
+  "goal": "数字人追爆款短视频工具：爆款采集、文案仿写、数字人口播、自动包装和发布",
+  "strategy": "Workbench as orchestrator, open-source tools as replaceable adapters, authorized digital-human tools for lip sync.",
+  "modules": [
+    {
+      "id": "trend",
+      "name": "爆款采集",
+      "status": "manual-first",
+      "primary": "手动导入链接/标题/数据",
+      "candidates": ["MediaCrawler derivatives", "browser automation", "CSV import"],
+      "input": ["platform", "url", "title", "metrics"],
+      "output": ["trend_record.json"],
+      "mvp": "先做手动入库和 CSV 导入，避免第一版被平台风控卡住。"
+    },
+    {
+      "id": "download",
+      "name": "视频下载",
+      "status": "planned",
+      "primary": "yt-dlp",
+      "candidates": ["yt-dlp", "lux"],
+      "input": ["url"],
+      "output": ["source_video.mp4", "source_audio.wav"],
+      "mvp": "第二阶段接入。"
+    },
+    {
+      "id": "transcribe",
+      "name": "文案提取",
+      "status": "planned",
+      "primary": "faster-whisper",
+      "candidates": ["faster-whisper", "Whisper", "FunASR"],
+      "input": ["source_audio.wav"],
+      "output": ["transcript.txt", "subtitles.srt"],
+      "mvp": "先支持本地文件转写，再接自动下载。"
+    },
+    {
+      "id": "rewrite",
+      "name": "爆款仿写",
+      "status": "active",
+      "primary": "LLM + local beauty 招商 templates",
+      "candidates": ["DeepSeek API", "Qwen API", "OpenAI-compatible API", "Codex assisted templates"],
+      "input": ["transcript.txt", "persona.json", "offer.json"],
+      "output": ["script.txt", "hooks.json", "titles.json"],
+      "mvp": "当前工作台已具备脚本模板雏形，下一步增加爆款结构拆解。"
+    },
+    {
+      "id": "voice",
+      "name": "声音合成",
+      "status": "demo",
+      "primary": "authorized TTS provider or local TTS",
+      "candidates": ["CosyVoice", "GPT-SoVITS", "ElevenLabs", "Windows System.Speech"],
+      "input": ["script.txt", "voice_profile"],
+      "output": ["voice.wav"],
+      "mvp": "先保留系统 TTS/授权 API，后续接本地声音克隆。"
+    },
+    {
+      "id": "avatar",
+      "name": "数字人口型同步",
+      "status": "active-via-handoff",
+      "primary": "立客通文件夹交接",
+      "candidates": ["立客通", "HeyGem", "HeyGen", "D-ID", "MuseTalk", "Wav2Lip", "SadTalker"],
+      "input": ["source_video.mp4", "voice.wav", "script.txt", "persona.txt"],
+      "output": ["avatar_video.mp4"],
+      "mvp": "继续用立客通素材包交接，保证像本人。"
+    },
+    {
+      "id": "package",
+      "name": "自动剪辑包装",
+      "status": "partially-active",
+      "primary": "FFmpeg",
+      "candidates": ["FFmpeg", "MoviePy", "Remotion/HTML render"],
+      "input": ["avatar_video.mp4", "titles.json", "subtitles.srt", "bgm.mp3"],
+      "output": ["final_video.mp4", "cover.jpg"],
+      "mvp": "优先做标题条、重点字幕、身份条、导流口令、BGM。"
+    },
+    {
+      "id": "publish",
+      "name": "多平台发布",
+      "status": "planned",
+      "primary": "social-auto-upload",
+      "candidates": ["social-auto-upload", "browser automation", "manual checklist"],
+      "input": ["final_video.mp4", "title", "caption", "tags", "schedule"],
+      "output": ["publish_record.json"],
+      "mvp": "先记录发布计划，后续接浏览器自动上传。"
+    }
+  ]
+}
+
